@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import {
+  Alert,
   Image,
   Keyboard,
   KeyboardAvoidingView,
@@ -16,8 +17,25 @@ import {
 import { COLORS, FONTS, SIZES } from "../Theme/Theme";
 import RoundedLogoComponent from "../Component/RoundedLogoComponent";
 import CopyRightComponent from "../Component/CopyRightComponent";
+import { handleChange } from "../Global/Methods";
+import { AuthContext } from "../Provider/AuthProvider";
 
 const LoginScreen = (props) => {
+
+  const { handleLogin } = useContext(AuthContext);
+  const [data, setData] = useState({});
+
+
+  const handleSubmit = () => {
+    let fields = ['email', 'password'];
+    if (fields.some(field => !data[field])) {
+      Alert.alert('Error', 'Please fill in all the fields!');
+    } else {
+      handleLogin(data);
+    }
+  }
+
+
   return (
     <KeyboardAvoidingView
       enabled
@@ -46,21 +64,24 @@ const LoginScreen = (props) => {
                     style={styles.input}
                     placeholderTextColor={COLORS.darkgray}
                     placeholder="Username or email"
+                    onChangeText={e => handleChange('email', e, setData)}
                   />
                   <TextInput
                     secureTextEntry
                     style={styles.input}
                     placeholderTextColor={COLORS.darkgray}
                     placeholder="Password"
+                    onChangeText={e => handleChange('password', e, setData)}
                   />
                   <TouchableOpacity
                     activeOpacity={0.7}
                     style={styles.button}
+                    onPress={handleSubmit}
                   >
                     <Text style={styles.btnText}>Login Now</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={{marginTop:SIZES.padding2}} onPress={()=>props.navigation.navigate("SignupScreen")}>
-                    <Text style={{...FONTS.body5,color:COLORS.secondInfo,textAlign:"center"}}>Don't have any account , Please Signup</Text>
+                  <TouchableOpacity style={{ marginTop: SIZES.padding2 }} onPress={() => props.navigation.navigate("SignupScreen")}>
+                    <Text style={{ ...FONTS.body5, color: COLORS.secondInfo, textAlign: "center" }}>Don't have any account , Please Signup</Text>
                   </TouchableOpacity>
                 </View>
               </ScrollView>

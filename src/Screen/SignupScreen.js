@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import {
+  Alert,
   Image,
   Keyboard,
   KeyboardAvoidingView,
@@ -16,8 +17,23 @@ import {
 import { COLORS, FONTS, SIZES } from "../Theme/Theme";
 import RoundedLogoComponent from "../Component/RoundedLogoComponent";
 import CopyRightComponent from "../Component/CopyRightComponent";
+import { AuthContext } from "../Provider/AuthProvider";
+import { handleChange } from "../Global/Methods";
 
 const SignupScreen = (props) => {
+  const [data, setData] = useState({});
+  const { handleSignUp } = useContext(AuthContext);
+
+  const handleSubmit = () => {
+    console.log(data);
+    const fields = ['name', 'email', 'password', 'password_confirmation'];
+    if (fields.some(field => !data[field])) {
+      Alert.alert('Error', 'Please fill in all the fields!');
+    } else {
+      handleSignUp(data);
+    }
+  }
+
   return (
     <KeyboardAvoidingView
       enabled
@@ -45,28 +61,39 @@ const SignupScreen = (props) => {
                   <TextInput
                     style={styles.input}
                     placeholderTextColor={COLORS.darkgray}
+                    placeholder="Name"
+                    value={data?.name}
+                    onChangeText={e => handleChange('name', e, setData)}
+                  />
+                  <TextInput
+                    style={styles.input}
+                    placeholderTextColor={COLORS.darkgray}
                     placeholder="Email or Phone Number"
+                    onChangeText={e => handleChange('email', e, setData)}
                   />
                   <TextInput
                     secureTextEntry
                     style={styles.input}
                     placeholderTextColor={COLORS.darkgray}
                     placeholder="Password"
+                    onChangeText={e => handleChange('password', e, setData)}
                   />
                   <TextInput
                     secureTextEntry
                     style={styles.input}
                     placeholderTextColor={COLORS.darkgray}
                     placeholder="Confirm Password"
+                    onChangeText={e => handleChange('password_confirmation', e, setData)}
                   />
                   <TouchableOpacity
                     activeOpacity={0.7}
                     style={styles.button}
+                    onPress={handleSubmit}
                   >
                     <Text style={styles.btnText}>SignUp Now</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={()=>props.navigation.navigate("LoginScreen")} style={{marginTop:SIZES.padding2}}>
-                    <Text style={{...FONTS.body5,color:COLORS.secondInfo,textAlign:"center"}}>Already have account? , Please Login</Text>
+                  <TouchableOpacity onPress={() => props.navigation.navigate("LoginScreen")} style={{ marginTop: SIZES.padding2 }}>
+                    <Text style={{ ...FONTS.body5, color: COLORS.secondInfo, textAlign: "center" }}>Already have account? , Please Login</Text>
                   </TouchableOpacity>
                 </View>
               </ScrollView>

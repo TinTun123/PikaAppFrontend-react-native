@@ -9,11 +9,12 @@ import { AuthContext } from "../Provider/AuthProvider";
 
 function Route(props) {
     const {
-        alreadyLogin
+        alreadyLogin,
+        restoreUserData
     } = useContext(AuthContext);
 
     useEffect(() => {
-        // restoreUserData();
+        restoreUserData();
     }, []);
 
     return (
