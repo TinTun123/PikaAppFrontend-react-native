@@ -7,21 +7,28 @@ export const AuthContext = createContext();
 
 
 const AuthProvider = props => {
-    const [alreadyLogin, setAlreadyLogin] = useState(true);
+  const [alreadyLogin, setAlreadyLogin] = useState(true);
 
-    // let config = {
-    //     headers: {
-    //         "Accept": "application/json",
-    //         "Authorization": `Bearer ${token}`,
-    //     },
-    // };
-    return (
-      <AuthContext.Provider value={{
-          alreadyLogin,
-      }}>
-          {props.children}
-      </AuthContext.Provider>
-    );
+  // let config = {
+  //     headers: {
+  //         "Accept": "application/json",
+  //         "Authorization": `Bearer ${token}`,
+  //     },
+  // };
+  return (
+    <AuthContext.Provider value={{
+      alreadyLogin,
+      handleLogin: (email,password) => {
+        console.log(email,password);
+      },
+      handleSignUp : (email,password,confirmPassword) => {
+        console.log(email,password,confirmPassword);
+      },
+
+    }}>
+      {props.children}
+    </AuthContext.Provider>
+  );
 };
 
 export default AuthProvider;
