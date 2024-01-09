@@ -75,7 +75,7 @@ const AppProvider = ({ children }) => {
       console.log(e.response.status);
       if (e.response.status === 401) {
         Alert.alert('Error', 'You are logged out!');
-
+        setAlreadyLogin(false);
       }
     }
   }

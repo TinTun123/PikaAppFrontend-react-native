@@ -29,7 +29,6 @@ const HomeScreen = props => {
           <TouchableOpacity style={styles.notiBtn}>
             <Octicons color={COLORS.primaryBorder} size={18} name="bell" />
           </TouchableOpacity>
-
         </View>
         <TouchableOpacity style={styles.searchBar}>
           <Text style={{ ...FONTS.body4, color: COLORS.darkgray }}>Search PodCast</Text>

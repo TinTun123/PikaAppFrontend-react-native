@@ -12,7 +12,7 @@ const FreePodcast = () => {
       <TouchableOpacity style={styles.cardContainer}>
         <Image style={{ width: 60, height: 60, borderRadius: SIZES.radius }} source={require('../../Graphic/DummyImage/profile.png')} />
         <View style={{ justifyContent: 'space-between' }}>
-          <Text style={{ ...FONTS.body5, color: COLORS.black }}>The Joe Rogan Experience</Text>
+          <Text style={{ ...FONTS.body5, color: COLORS.black }}>The Joe Rogan Experience </Text>
           <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
             <Image style={styles.smallProfile} source={require('../../Graphic/DummyImage/profile.png')} />
             <Text style={styles.tagStyle} >Pika Sharing</Text>
@@ -64,8 +64,8 @@ const styles = StyleSheet.create({
     color: COLORS.black
   },
   smallProfile: {
-    width: 20,
-    height: 20,
+    width: 15,
+    height: 15,
     borderRadius: SIZES.roundRadius
   },
   detailButton: {
