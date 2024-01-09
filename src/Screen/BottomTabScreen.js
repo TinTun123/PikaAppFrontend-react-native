@@ -8,14 +8,14 @@ import Foundation from "react-native-vector-icons/Foundation";
 import CategoryScreen from "./CategoryScreen";
 import LibraryScreen from "./LibraryScreen";
 import FavoriteScreen from "./FavouriteScreen";
-import ProfileScreen from "./ProfileScreen";
+import ProfileScreen from "./Profile/ProfileScreen";
 
 const Stack = createBottomTabNavigator();
-const Icon = ({ name, focused , text }) => {
+const Icon = ({ name, focused, text }) => {
   return (
-    <View style={{justifyContent:"center",alignItems:"center"}}>
+    <View style={{ justifyContent: "center", alignItems: "center" }}>
       <Feather name={name} size={20} color={focused ? COLORS.primary : COLORS.darkgray} />
-      <Text style={{color:focused ? COLORS.primary : COLORS.darkgray,...FONTS.body6}}>{text}</Text>
+      <Text style={{ color: focused ? COLORS.primary : COLORS.darkgray, ...FONTS.body6 }}>{text}</Text>
     </View>
   );
 };

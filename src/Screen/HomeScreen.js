@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Text, View, StyleSheet, Image, TouchableOpacity, Dimensions, ScrollView } from "react-native";
 import { COLORS, FONTS, SIZES } from "../Theme/Theme";
 import Octicons from "react-native-vector-icons/Octicons";
@@ -8,10 +8,12 @@ import PopularPodcast from "../Component/Home/PopularPodcast";
 import FreePodcast from "../Component/Home/FreePodcast";
 import TitleWithSeeMore from "../Component/Home/TitleWithSeeMore";
 import LastPlayed from "../Component/Home/LastPlayed";
+import { AppContext } from "../Provider/AppProvider";
 
 
 const HomeScreen = props => {
   const width = Dimensions.get('window').width;
+  const { t, setLanguage } = useContext(AppContext);
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -20,7 +22,7 @@ const HomeScreen = props => {
           <View style={styles.profileNameSection}>
             <Image style={styles.profileImage} source={require("../Graphic/DummyImage/profile.png")} />
             <View>
-              <Text style={{ ...FONTS.body4, color: COLORS.black, margin: 0 }}>Hello</Text>
+              <Text style={{ ...FONTS.body4, color: COLORS.black, margin: 0 }}>{t('hello')}</Text>
               <Text style={styles.name}>Mariael</Text>
             </View>
           </View>

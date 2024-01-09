@@ -1,35 +1,36 @@
 import React, { useContext } from "react";
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import globalStyles from "../Global/Styles";
-import { COLORS, SIZES } from "../Theme/Theme";
+import globalStyles from "../../Global/Styles";
+import { COLORS, SIZES } from "../../Theme/Theme";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import { AuthContext } from "../Provider/AuthProvider";
+import { useNavigation } from "@react-navigation/native";
+import { AppContext } from "../../Provider/AppProvider";
 
 
 const tabs = [
-  { icon: 'hearto', display: 'Favorites' },
-  { icon: 'download', display: 'Downloads' },
-  { icon: 'earth', display: 'Languages' },
-  { icon: 'pay-circle-o1', display: 'Paid course' },
-  { icon: 'history', display: 'Payment History' },
-  { icon: 'rotate', display: 'Check Update' },
-  { icon: 'shield-lock', display: 'Privacy & Policy' },
-  { icon: 'document-text-outline', display: 'Terms & Conditions' },
-  { icon: 'earphones-alt', display: 'Contact Us' },
-  { icon: 'sign-out', display: 'Logout' },
+  { icon: 'hearto', display: 'Favorites', screen: 'ChangeLanguageScreen' },
+  { icon: 'download', display: 'Downloads', screen: 'ChangeLanguageScreen' },
+  { icon: 'earth', display: 'Languages', screen: 'ChangeLanguageScreen' },
+  { icon: 'pay-circle-o1', display: 'Paid course', screen: 'ChangeLanguageScreen' },
+  { icon: 'history', display: 'Payment History', screen: 'ChangeLanguageScreen' },
+  { icon: 'rotate', display: 'Check Update', screen: 'ChangeLanguageScreen' },
+  { icon: 'shield-lock', display: 'Privacy & Policy', screen: 'ChangeLanguageScreen' },
+  { icon: 'document-text-outline', display: 'Terms & Conditions', screen: 'ChangeLanguageScreen' },
+  { icon: 'earphones-alt', display: 'Contact Us', screen: 'ChangeLanguageScreen' },
+  { icon: 'sign-out', display: 'Logout', screen: 'ChangeLanguageScreen' },
 ];
 
 
 
 const ProfileScreen = props => {
 
-  const { handleLogout } = useContext(AuthContext);
+  const { handleLogout } = useContext(AppContext);
+  const navigation = useNavigation();
 
   const checkTab = (current, tab) => {
     return tab.display === current;
@@ -38,7 +39,9 @@ const ProfileScreen = props => {
   const handleTabPress = (tab) => {
     if (checkTab('Logout', tab)) {
       handleLogout();
+      return;
     }
+    navigation.navigate(tab.screen);
   }
   const DynamicIcons = (tab) => {
     if (checkTab('Languages', tab) || checkTab('Favorites', tab) || checkTab('Paid course', tab)) {
@@ -66,7 +69,7 @@ const ProfileScreen = props => {
     <View style={globalStyles.container}>
       <ScrollView style={{ ...globalStyles.subContainer }}>
         <View style={styles.profileContainer}>
-          <Image style={styles.profileImage} source={require("../Graphic/DummyImage/profile.png")} />
+          <Image style={styles.profileImage} source={require("../../Graphic/DummyImage/profile.png")} />
           <View >
             <Text style={styles.name}>Beautiful Princess</Text>
             <Text style={styles.email}>beautifulprincess@gmail.com</Text>
@@ -98,8 +101,6 @@ const ProfileScreen = props => {
               </TouchableOpacity>
             ))
           }
-
-
         </View>
       </ScrollView>
     </View>

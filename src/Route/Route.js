@@ -1,4 +1,4 @@
-import { StatusBar } from "react-native";
+import { StatusBar, Text, View } from "react-native";
 
 const isAlreadyLogin = false;
 import React, { useContext, useEffect } from "react";
@@ -10,6 +10,7 @@ import { AuthContext } from "../Provider/AuthProvider";
 function Route(props) {
     const {
         alreadyLogin,
+        loading,
         restoreUserData
     } = useContext(AuthContext);
 
@@ -22,8 +23,13 @@ function Route(props) {
             <StatusBar barStyle={"dark-content"} backgroundColor={"white"} />
             <NavigationContainer>
                 {
-                    alreadyLogin ? <AppStack /> : <AuthStack />
+                    loading ?
+                        <View>
+                            <Text>Loading</Text>
+                        </View>
+                        : alreadyLogin ? <AppStack /> : <AuthStack />
                 }
+
             </NavigationContainer>
         </>
     );
