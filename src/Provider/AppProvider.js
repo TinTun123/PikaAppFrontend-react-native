@@ -28,13 +28,11 @@ const AppProvider = ({ children }) => {
   const handleLogout = async () => {
     try {
       let res = await axios.post(logoutApi, {}, config);
-      console.log(res.data);
       AsyncStorage.removeItem('@token').then(res => {
         setToken('');
         setAlreadyLogin(false);
       })
     } catch (e) {
-      console.log(e.response.data);
       Alert.alert('Error', e.response?.data?.message ?? 'An error occur');
     }
   }
@@ -69,10 +67,8 @@ const AppProvider = ({ children }) => {
   const getUser = async () => {
     try {
       let res = await axios.get(getUserInfoApi, config);
-      console.log(res.data.user);
       setUser(res.data.user);
     } catch (e) {
-      console.log(e.response.status);
       if (e.response.status === 401) {
         Alert.alert('Error', 'You are logged out!');
         setAlreadyLogin(false);

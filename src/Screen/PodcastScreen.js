@@ -1,22 +1,32 @@
-import React from "react";
-import { Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useContext } from "react";
+import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import globalStyles from "../Global/Styles";
 import Carousel from "react-native-reanimated-carousel";
 import { COLORS, FONTS, SIZES } from "../Theme/Theme";
 import ScreenHeaderBarComponent from "../Component/ScreenHeaderBarComponent";
 import TitleWithSeeMore from "../Component/Home/TitleWithSeeMore";
 import PodcastCard from "../Component/PodcastCard";
+import { useQuery } from "react-query";
+import { courseCategoryApi, podcastCategoryApi, popularPodcastsWithLimit, recommendedPodcastsWithLimit } from "../api/api";
+import axios from "axios";
+import { AppContext } from "../Provider/AppProvider";
 
-const categories = ['Motivation', 'Business', 'Self-Growth', 'Youth', 'Speed', 'Life-Style', 'Money', 'Life', 'See More'];
 
 const PodcastScreen = props => {
 
   const width = Dimensions.get('window').width;
+  const { config } = useContext(AppContext);
+  const { data: podcastsData } = useQuery(recommendedPodcastsWithLimit, () => axios.get
+    (recommendedPodcastsWithLimit, config));
+  const { data: categoryData } = useQuery(podcastCategoryApi, () => axios.get(podcastCategoryApi, config));
+  const { data: popularData } = useQuery(popularPodcastsWithLimit, () => axios.get(popularPodcastsWithLimit, config));
+
+
 
   const CategoryButton = ({ category }) => {
     return (
       <TouchableOpacity style={styles.categoryButton}>
-        <Text style={{ ...FONTS.body5 }}>{category}</Text>
+        <Text style={{ ...FONTS.body5 }}>{category.name}</Text>
       </TouchableOpacity>
     )
   }
@@ -31,11 +41,15 @@ const PodcastScreen = props => {
             loop
             width={width}
             autoPlay={true}
-            data={[...new Array(6).keys()]}
+            data={popularData?.data?.podcasts}
             scrollAnimationDuration={1000}
             // onSnapToItem={(index) => console.log('current index:', index)}
-            renderItem={({ index }) => (
-              <Image style={[styles.carouselImage, { height: width / 2 }]} source={require("../Graphic/DummyImage/profile.png")} />
+            renderItem={({ item }) => (
+              <TouchableOpacity key={item.id}>
+                <Image style={[styles.carouselImage, { height: width / 2 }]} source={{
+                  uri: item.image
+                }} />
+              </TouchableOpacity>
             )}
           />
         </View>
@@ -44,8 +58,8 @@ const PodcastScreen = props => {
           <Text style={styles.headerText}>Categories</Text>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginVertical: 5 }}>
             {
-              categories.map(item => (
-                <CategoryButton key={item} category={item} />
+              categoryData?.data?.categories.map(item => (
+                <CategoryButton key={item.id} category={item} />
               ))
             }
           </View>
@@ -53,8 +67,8 @@ const PodcastScreen = props => {
             <TitleWithSeeMore title={'Recommendation'} />
             <View style={{ gap: 13 }}>
               {
-                [...new Array(3).keys()].map(item => (
-                  <PodcastCard key={item} item={item} />
+                podcastsData?.data?.podcasts.map(item => (
+                  <PodcastCard key={item.id} item={item} />
                 ))
               }
             </View>

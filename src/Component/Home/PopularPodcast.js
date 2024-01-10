@@ -1,14 +1,24 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import PodcastCard from "../PodcastCard";
 import { View } from "react-native";
+import { useQuery } from "react-query";
+import { popularPodcastsWithLimit } from "../../api/api";
+import axios from "axios";
+import { AppContext } from "../../Provider/AppProvider";
 
 
 const PopularPodcast = () => {
+
+  const { config } = useContext(AppContext);
+
+  const { isLoading, isError, data } = useQuery(popularPodcastsWithLimit, () => axios.get(popularPodcastsWithLimit, config))
+
   return (
     <View style={{ gap: 13 }}>
       {
-        [...new Array(2).keys()].map(item => (
-          <PodcastCard key={item} item={item} />
+        !isError && !isLoading &&
+        data?.data?.podcasts?.map(item => (
+          <PodcastCard key={item.id} item={item} />
         ))
       }
     </View>

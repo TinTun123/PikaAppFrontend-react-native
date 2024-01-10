@@ -13,11 +13,13 @@ const CourseCard = ({ item }) => {
   return (
     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
       <View style={{ flexDirection: 'row', gap: 10 }}>
-        <Image style={{ width: 100, height: 100, borderRadius: SIZES.radius }} source={require('../../Graphic/DummyImage/profile.png')} />
+        <Image style={{ width: 100, height: 100, borderRadius: SIZES.radius }} source={{
+          uri: item.image
+        }} />
         <View style={{ justifyContent: 'space-between', width: '48%' }}>
-          <Text style={{ ...FONTS.body4, color: COLORS.black }}>The Joe Rogan Experience</Text>
+          <Text style={{ ...FONTS.body4, color: COLORS.black }}>{item.title}</Text>
           <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
-            <Text style={styles.module}>Modules : 8  Lessons : 72</Text>
+            <Text style={styles.module}>Modules : {item.modules_count}  Lessons : {item.videos_count}</Text>
           </View>
           <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
             <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }} >
@@ -25,7 +27,7 @@ const CourseCard = ({ item }) => {
               <Text style={styles.tagStyle} >10h 20m</Text>
             </View>
             <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
-              <Text style={styles.tagStyle}> &  1,000,000 mmk</Text>
+              <Text style={styles.tagStyle}> &  {(+item.price).toLocaleString('en-US')} mmk</Text>
             </View>
           </View>
         </View>

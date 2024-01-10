@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Text, View, StyleSheet, Image, TouchableOpacity, Dimensions, ScrollView } from "react-native";
+import { Text, View, StyleSheet, Image, TouchableOpacity, Dimensions, ScrollView, Linking } from "react-native";
 import { COLORS, FONTS, SIZES } from "../Theme/Theme";
 import Octicons from "react-native-vector-icons/Octicons";
 import Feather from "react-native-vector-icons/Feather";
@@ -9,11 +9,18 @@ import FreePodcast from "../Component/Home/FreePodcast";
 import TitleWithSeeMore from "../Component/Home/TitleWithSeeMore";
 import LastPlayed from "../Component/Home/LastPlayed";
 import { AppContext } from "../Provider/AppProvider";
+import { useQuery } from "react-query";
+import axios from "axios";
+import { sliderApi } from "../api/api";
 
 
 const HomeScreen = props => {
   const width = Dimensions.get('window').width;
   const { t, setLanguage } = useContext(AppContext);
+  const { config } = useContext(AppContext);
+
+  const { data, isLoading, isError, error } = useQuery('sliders', () => axios.get(sliderApi, config));
+
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -35,21 +42,28 @@ const HomeScreen = props => {
           <Feather name="search" size={20} color={COLORS.darkgray} />
         </TouchableOpacity>
 
-        <View style={{ height: width / 1.5 }}>
-          <Text style={styles.headerText}>Suggested for you</Text>
-          <Carousel
-            style={{ marginTop: SIZES.padding }}
-            loop
-            width={width}
-            autoPlay={true}
-            data={[...new Array(6).keys()]}
-            scrollAnimationDuration={1000}
-            // onSnapToItem={(index) => console.log('current index:', index)}
-            renderItem={({ index }) => (
-              <Image style={[styles.carouselImage, { height: width / 2 }]} source={require("../Graphic/DummyImage/profile.png")} />
-            )}
-          />
-        </View>
+        {
+          !isLoading && !isError &&
+          <View style={{ height: width / 1.5 }}>
+            <Text style={styles.headerText}>Suggested for you</Text>
+            <Carousel
+              style={{ marginTop: SIZES.padding }}
+              loop
+              width={width}
+              autoPlay={true}
+              data={data?.data?.sliders}
+              scrollAnimationDuration={1000}
+              // onSnapToItem={(index) => console.log('current index:', index)}
+              renderItem={({ item, index }) => (
+                <TouchableOpacity key={index} onPress={() => Linking.openURL(item.link)}>
+                  <Image style={[styles.carouselImage, { height: width / 2 }]} source={{
+                    uri: item.image
+                  }} />
+                </TouchableOpacity>
+              )}
+            />
+          </View>
+        }
 
         <View>
           <TitleWithSeeMore title={'Popular Topics'} />

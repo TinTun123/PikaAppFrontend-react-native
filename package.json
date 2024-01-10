@@ -27,7 +27,8 @@
     "react-native-screens": "^3.27.0",
     "react-native-vector-icons": "^10.0.1",
     "react-native-vimeo-iframe": "^1.2.1",
-    "react-native-webview": "^13.6.3"
+    "react-native-webview": "^13.6.3",
+    "react-query": "^3.39.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

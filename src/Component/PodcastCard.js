@@ -9,9 +9,11 @@ const PodcastCard = ({ item }) => {
   return (
     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
       <View style={{ flexDirection: 'row', gap: 10 }}>
-        <Image style={{ width: 80, height: 80, borderRadius: SIZES.radius }} source={require('../Graphic/DummyImage/profile.png')} />
+        <Image style={{ width: 80, height: 80, borderRadius: SIZES.radius }} source={{
+          uri: item.image
+        }} />
         <View style={{ justifyContent: 'space-between', width: '47%' }}>
-          <Text style={{ ...FONTS.body5, color: COLORS.black }}>The Joe Rogan Experience</Text>
+          <Text style={{ ...FONTS.body5, color: COLORS.black }}>{item.title}</Text>
           <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
             <Image style={styles.smallProfile} source={require('../Graphic/DummyImage/profile.png')} />
             <Text style={styles.tagStyle} >Pika Sharing</Text>
@@ -23,7 +25,7 @@ const PodcastCard = ({ item }) => {
             </View>
             <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
               <AntDesign name={'tag'} size={14} color={COLORS.primaryInfo} />
-              <Text style={styles.tagStyle} >Motivation</Text>
+              <Text style={styles.tagStyle} >{item.category?.name}</Text>
             </View>
           </View>
         </View>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import globalStyles from "../../Global/Styles";
 import Carousel from "react-native-reanimated-carousel";
@@ -6,20 +6,32 @@ import { COLORS, FONTS, SIZES } from "../../Theme/Theme";
 import ScreenHeaderBarComponent from "../../Component/ScreenHeaderBarComponent";
 import TitleWithSeeMore from "../../Component/Home/TitleWithSeeMore";
 import CourseCard from "../../Component/Course/CourseCard";
+import { useQuery } from "react-query";
+import { courseCategoryApi, popularCourseWithLimit, recommendedCourseWithLimit } from "../../api/api";
+import axios from "axios";
+import { AppContext } from "../../Provider/AppProvider";
 
-const categories = ['Motivation', 'Business', 'Self-Growth', 'Youth', 'Speed', 'Life-Style', 'Money', 'Life', 'See More'];
 
-const PodcastScreen = props => {
+
+const CourseScreen = props => {
 
   const width = Dimensions.get('window').width;
+  const { config } = useContext(AppContext);
+
+  const { data: recommendedCourseData } = useQuery(recommendedCourseWithLimit, () => axios.get(recommendedCourseWithLimit, config));
+  const { data: popularData } = useQuery(popularCourseWithLimit, () => axios.get(popularCourseWithLimit, config));
+  const { data: categoryData } = useQuery(courseCategoryApi, () => axios.get(courseCategoryApi, config));
+
 
   const CategoryButton = ({ category }) => {
     return (
       <TouchableOpacity style={styles.categoryButton}>
-        <Text style={{ ...FONTS.body5 }}>{category}</Text>
+        <Text style={{ ...FONTS.body5 }}>{category.name}</Text>
       </TouchableOpacity>
     )
   }
+
+
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={globalStyles.container}>
       <ScreenHeaderBarComponent headerText={'Course'} />
@@ -31,21 +43,24 @@ const PodcastScreen = props => {
             loop
             width={width}
             autoPlay={true}
-            data={[...new Array(6).keys()]}
+            data={popularData?.data?.courses}
             scrollAnimationDuration={1000}
             // onSnapToItem={(index) => console.log('current index:', index)}
-            renderItem={({ index }) => (
-              <Image style={[styles.carouselImage, { height: width / 2 }]} source={require("../../Graphic/DummyImage/profile.png")} />
+            renderItem={({ item, index }) => (
+              <TouchableOpacity>
+                <Image style={[styles.carouselImage, { height: width / 2 }]} source={{
+                  uri: item.image
+                }} />
+              </TouchableOpacity>
             )}
           />
         </View>
-
         <View>
           <Text style={styles.headerText}>Categories</Text>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginVertical: 5 }}>
             {
-              categories.map(item => (
-                <CategoryButton key={item} category={item} />
+              categoryData?.data?.categories.map(item => (
+                <CategoryButton key={item.id} category={item} />
               ))
             }
           </View>
@@ -53,8 +68,8 @@ const PodcastScreen = props => {
             <TitleWithSeeMore title={'Recommendation'} />
             <View style={{ gap: 13 }}>
               {
-                [...new Array(3).keys()].map(item => (
-                  <CourseCard key={item} item={item} />
+                recommendedCourseData?.data?.courses?.map(item => (
+                  <CourseCard key={item.id} item={item} />
                 ))
               }
             </View>
@@ -84,4 +99,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default PodcastScreen
+export default CourseScreen

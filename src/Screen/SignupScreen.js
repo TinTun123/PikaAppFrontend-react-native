@@ -25,7 +25,6 @@ const SignupScreen = (props) => {
   const { handleSignUp } = useContext(AuthContext);
 
   const handleSubmit = () => {
-    console.log(data);
     const fields = ['name', 'email', 'password', 'password_confirmation'];
     if (fields.some(field => !data[field])) {
       Alert.alert('Error', 'Please fill in all the fields!');
