@@ -22,12 +22,8 @@ const CourseCard = ({ item }) => {
             <Text style={styles.module}>Modules : {item.modules_count}  Lessons : {item.videos_count}</Text>
           </View>
           <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
-            <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }} >
-              <MaterialCommunityIcons name={'clock-time-five'} size={14} color={COLORS.primaryInfo} />
-              <Text style={styles.tagStyle} >10h 20m</Text>
-            </View>
             <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
-              <Text style={styles.tagStyle}> &  {(+item.price).toLocaleString('en-US')} mmk</Text>
+              <Text style={styles.tagStyle}>{(+item.price).toLocaleString('en-US')} mmk</Text>
             </View>
           </View>
         </View>

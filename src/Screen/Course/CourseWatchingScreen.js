@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { ActivityIndicator, Dimensions, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import globalStyles from "../../Global/Styles";
 import ScreenHeaderBarComponent from "../../Component/ScreenHeaderBarComponent";
 import { useRoute } from "@react-navigation/native";
@@ -7,9 +7,12 @@ import { Vimeo } from "react-native-vimeo-iframe";
 import { COLORS, SIZES } from "../../Theme/Theme";
 import CollapsibleView from "../../Component/CollapsibleView";
 import { useQuery } from "react-query";
-import { getCoursesApi, getLessonApi } from "../../api/api";
+import { getCoursesApi, getLessonApi, toggleLessonWatchedApi } from "../../api/api";
 import { AppContext } from "../../Provider/AppProvider";
 import axios from "axios";
+import { formatVideoDuration } from "../../Global/Methods";
+import AntDesign from 'react-native-vector-icons/AntDesign';
+
 
 const CourseWatchingScreen = () => {
 
@@ -19,15 +22,14 @@ const CourseWatchingScreen = () => {
   const [currentLesson, setCurrentLesson] = useState(null);
   const [currentLessonId, setCurrentLessonId] = useState(null);
 
-  const { data: courseData, isLoading: courseLoading, isError } = useQuery(`${getCoursesApi}/${id}}`, () => axios.get(`${getCoursesApi}/${id}}`, config));
+  const { data: courseData, isLoading: courseLoading, isError, refetch: refetchCourse } = useQuery(`${getCoursesApi}/${id}}`, () => axios.get(`${getCoursesApi}/${id}}`, config));
 
-  const { isLoading: lessonLoading, refetch } = useQuery(`${getLessonApi}/${currentLessonId}`, () => axios.get(`${getLessonApi}/${currentLessonId}`, config), {
+  const { isLoading: lessonLoading, refetch: refetchLesson } = useQuery(`${getLessonApi}/${currentLessonId}`, () => axios.get(`${getLessonApi}/${currentLessonId}`, config), {
     enabled: !!(currentLessonId),
     onSuccess: (data) => {
       setCurrentLesson(data.data.lesson);
     }
   });
-
 
   useEffect(() => {
     if (!courseLoading) {
@@ -36,11 +38,19 @@ const CourseWatchingScreen = () => {
   }, [courseLoading]);
 
   useEffect(() => {
-    console.log('currentLessonid ', currentLessonId)
     if (currentLessonId) {
-      refetch();
+      refetchLesson();
     }
   }, [currentLessonId]);
+
+  const markAsWatched = (lessonId) => {
+    try {
+      let res = axios.post(`${toggleLessonWatchedApi}/${lessonId}`, {}, config)
+      refetchCourse();
+    } catch (e) {
+      Alert.alert('Error', e.message);
+    }
+  }
 
 
   return (
@@ -80,8 +90,24 @@ const CourseWatchingScreen = () => {
                   }>
                     {
                       item?.videos?.map(video => (
-                        <TouchableOpacity key={video.id} onPress={() => setCurrentLessonId(video.id)} style={{ backgroundColor: currentLesson?.id === video.id ? COLORS.primary : COLORS.subGray, padding: SIZES.padding, marginBottom: SIZES.padding - 5, marginLeft: SIZES.padding, borderRadius: SIZES.radius }}>
-                          <Text style={{ color: currentLesson?.id === video.id ? COLORS.white : COLORS.black }}>{video.number} | {video.title}</Text>
+                        <TouchableOpacity
+                          key={video.id}
+                          onPress={() => setCurrentLessonId(video.id)}
+                          style={{ ...styles.lessonButton, backgroundColor: COLORS.subGray }}>
+                          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 7 }}>
+                            <TouchableOpacity onPress={() => markAsWatched(video.id)}>
+                              {
+                                video.watched ?
+                                  <AntDesign name='checkcircle' size={27} color={COLORS.primary} />
+                                  :
+                                  <AntDesign name='checkcircleo' size={27} color={currentLesson?.id === video.id ? COLORS.primary : COLORS.black} />
+
+                              }
+                            </TouchableOpacity>
+                            <Text style={{ color: currentLesson?.id === video.id ? COLORS.primary : COLORS.black }}>
+                              {video.title}</Text>
+                          </View>
+                          <Text style={{ color: currentLesson?.id === video.id ? COLORS.primary : COLORS.black }}>{formatVideoDuration(video.duration)}</Text>
                         </TouchableOpacity>
                       ))
                     }
@@ -89,11 +115,21 @@ const CourseWatchingScreen = () => {
                 ))
               }
             </ScrollView>
-
           </View>
       }
     </>
   )
 }
 
+
+const styles = StyleSheet.create({
+  lessonButton: {
+    padding: SIZES.padding, marginBottom: SIZES.padding - 5,
+    marginLeft: SIZES.padding,
+    borderRadius: SIZES.radius,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  }
+});
 export default CourseWatchingScreen;
