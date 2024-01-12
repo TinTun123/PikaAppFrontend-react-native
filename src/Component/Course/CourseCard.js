@@ -32,7 +32,7 @@ const CourseCard = ({ item }) => {
           </View>
         </View>
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate('CourseDetail')} style={styles.detailButton}>
+      <TouchableOpacity onPress={() => navigation.navigate('CourseDetailScreen', item.id)} style={styles.detailButton}>
         <Text style={styles.detailText}>See Details</Text>
       </TouchableOpacity>
     </View>

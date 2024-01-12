@@ -65,7 +65,7 @@ const PodcastScreen = props => {
           </View>
           <View>
             <TitleWithSeeMore title={'Recommendation'} />
-            <View style={{ gap: 13 }}>
+            <View style={{ gap: 15 }}>
               {
                 podcastsData?.data?.podcasts.map(item => (
                   <PodcastCard key={item.id} item={item} />

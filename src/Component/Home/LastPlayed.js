@@ -8,7 +8,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const LastPlayed = () => {
   return (
-    <View style={{ gap: 13 }}>
+    <View style={{ gap: 15 }}>
       {
         [...new Array(3).keys()].map(item => (
           <View key={item} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>

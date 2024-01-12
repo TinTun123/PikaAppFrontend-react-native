@@ -66,7 +66,7 @@ const CourseScreen = props => {
           </View>
           <View>
             <TitleWithSeeMore title={'Recommendation'} />
-            <View style={{ gap: 13 }}>
+            <View style={{ gap: 15 }}>
               {
                 recommendedCourseData?.data?.courses?.map(item => (
                   <CourseCard key={item.id} item={item} />

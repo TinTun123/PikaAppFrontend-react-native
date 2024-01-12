@@ -14,7 +14,7 @@ const PopularPodcast = () => {
   const { isLoading, isError, data } = useQuery(popularPodcastsWithLimit, () => axios.get(popularPodcastsWithLimit, config))
 
   return (
-    <View style={{ gap: 13 }}>
+    <View style={{ gap: 15 }}>
       {
         !isError && !isLoading &&
         data?.data?.podcasts?.map(item => (

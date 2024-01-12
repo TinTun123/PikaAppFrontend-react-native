@@ -10,7 +10,11 @@ export const recommendedPodcastsWithLimit = '/podcasts/recommended?limit=3';
 export const podcastsApi = '/podcasts'
 export const podcastCategoryApi = '/categories/podcast';
 
+export const getCoursesApi = '/courses';
 export const popularCourseWithLimit = '/courses?popular=1&limit=2';
 export const recommendedCourseWithLimit = '/courses?recommended=1&limit=3';
 export const courseCategoryApi = '/categories/course';
+
+export const getLessonApi = '/lessons';
+
 
