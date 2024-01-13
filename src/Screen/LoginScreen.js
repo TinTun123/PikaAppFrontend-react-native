@@ -73,6 +73,11 @@ const LoginScreen = (props) => {
                     placeholder="Password"
                     onChangeText={e => handleChange('password', e, setData)}
                   />
+                  <View style={{ flexDirection: "row", justifyContent: "flex-end", marginBottom: SIZES.padding }}>
+                    <TouchableOpacity onPress={() => props.navigation.navigate("EmailInputScreen")}>
+                      <Text style={{ ...FONTS.body5, color: COLORS.darkgray }}>Forgot Password?</Text>
+                    </TouchableOpacity>
+                  </View>
                   <TouchableOpacity
                     activeOpacity={0.7}
                     style={styles.button}
@@ -80,6 +85,7 @@ const LoginScreen = (props) => {
                   >
                     <Text style={styles.btnText}>Login Now</Text>
                   </TouchableOpacity>
+
                   <TouchableOpacity style={{ marginTop: SIZES.padding2 }} onPress={() => props.navigation.navigate("SignupScreen")}>
                     <Text style={{ ...FONTS.body5, color: COLORS.secondInfo, textAlign: "center" }}>Don't have any account , Please Signup</Text>
                   </TouchableOpacity>

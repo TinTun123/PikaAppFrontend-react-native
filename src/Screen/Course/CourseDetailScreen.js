@@ -12,6 +12,8 @@ import axios from "axios";
 import { AppContext } from "../../Provider/AppProvider";
 import { Vimeo } from "react-native-vimeo-iframe";
 import { formatVideoDuration } from "../../Global/Methods";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 
 const CourseDetailScreen = () => {
@@ -34,6 +36,14 @@ const CourseDetailScreen = () => {
     }
   }
 
+  const toggleSaved = async () => {
+    try {
+      let res = await axios.post(`${toggleSaved}/${id}`, {}, config);
+      refetchCourse();
+    } catch (e) {
+      Alert.alert('Error', e.message);
+    }
+  }
   console.log(data?.data?.hasAccess);
 
   return (
@@ -57,6 +67,14 @@ const CourseDetailScreen = () => {
                 <Image style={{ ...styles.courseImage, height: width / 1.7 }} source={{
                   uri: data?.data?.course?.image
                 }} />
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: COLORS.subGray, padding: SIZES.padding, }}>
+                  <TouchableOpacity style={{}}>
+                    <MaterialCommunityIcons size={30} name='share' color={COLORS.black} />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={toggleSaved} style={{}}>
+                    <FontAwesome size={30} name='bookmark' color={COLORS.primary} />
+                  </TouchableOpacity>
+                </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: SIZES.padding }}>
                   <View style={{ backgroundColor: COLORS.subGray, width: '48%', padding: SIZES.padding, borderRadius: SIZES.radius }}>
                     <Text>Duration</Text>

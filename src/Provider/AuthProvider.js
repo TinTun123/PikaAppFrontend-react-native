@@ -23,6 +23,28 @@ const AuthProvider = props => {
     },
   };
 
+  const passwordReset = async (email, password, navigation) => {
+    setLoading(true)
+    let data = {
+      email,
+      password
+    }
+    await axios.post(BASE_URL + resetPasswordApi, data).then((response) => {
+      setLoading(false)
+      Alert.alert(
+        "",
+        `${response.data.msg}`,
+        [
+          {
+            text: "Login Again",
+            onPress: () => navigation.navigate("LoginScreen"),
+          },
+        ]
+      );
+    }).catch((error) => {
+      setLoading(false)
+    })
+  };
   const handleLogin = async (data) => {
     try {
       let res = await axios.post(LoginApi, data, config);
@@ -67,6 +89,7 @@ const AuthProvider = props => {
     <QueryClientProvider client={queryClient}>
       <AuthContext.Provider value={{
         alreadyLogin,
+        passwordReset,
         setAlreadyLogin, handleSignUp, loading, token, setToken, handleLogin, restoreUserData,
       }}>
         {props.children}
