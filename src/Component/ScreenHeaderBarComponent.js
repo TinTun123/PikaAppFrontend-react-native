@@ -23,7 +23,7 @@ const ScreenHeaderBarComponent = ({ headerText }) => {
 const styles = StyleSheet.create({
   container: {
     height: 70,
-    widthL: '100%',
+    width: '100%',
     paddingVertical: SIZES.padding,
     flexDirection: "row",
     alignItems: "center",
@@ -39,14 +39,6 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.roundRadius,
     borderColor: COLORS.lightGray4,
     borderWidth: 1,
-    // shadowColor: "rgba(0,0,0,0.7)",
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 9,
-    // },
-    // shadowOpacity: 0.48,
-    // shadowRadius: 11.95,
-    // elevation: 18,
   },
   headerText: {
     ...FONTS.body4,

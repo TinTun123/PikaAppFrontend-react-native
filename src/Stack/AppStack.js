@@ -6,6 +6,7 @@ import ChangeLanguageScreen from "../Screen/Profile/ChangeLanguageScreen";
 import CourseWatchingScreen from "../Screen/Course/CourseWatchingScreen";
 import CourseDetailScreen from "../Screen/Course/CourseDetailScreen";
 import SavedCourseScreen from "../Screen/Course/SavedCourseScreen";
+import SearchScreen from "../Screen/Search/SearchScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ function AppStack() {
         <Stack.Screen name='CourseDetailScreen' component={CourseDetailScreen} />
         <Stack.Screen name='CourseWatchingScreen' component={CourseWatchingScreen} />
         <Stack.Screen name='SavedCourseScreen' component={SavedCourseScreen} />
+        <Stack.Screen name='SearchScreen' component={SearchScreen} />
       </Stack.Navigator>
     </AppProvider>
   );

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import globalStyles from "../../Global/Styles";
 import Carousel from "react-native-reanimated-carousel";
 import { COLORS, FONTS, SIZES } from "../../Theme/Theme";
@@ -10,6 +10,8 @@ import { useQuery } from "react-query";
 import { courseCategoryApi, popularCourseWithLimit, recommendedCourseWithLimit } from "../../api/api";
 import axios from "axios";
 import { AppContext } from "../../Provider/AppProvider";
+import PopularCourseCard from "../../Component/Course/PopularCourseCard";
+import SearchBarComponent from "../../Component/SearchBarComponent";
 
 
 
@@ -31,52 +33,42 @@ const CourseScreen = props => {
     )
   }
 
-
   return (
-    <ScrollView showsVerticalScrollIndicator={false} style={globalStyles.container}>
+    <View style={{backgroundColor:COLORS.white,flex:1}}>
       <ScreenHeaderBarComponent headerText={'Course'} />
-      <View style={{ ...globalStyles.subContainer, paddingBottom: SIZES.padding * 4 }}>
-        <View style={{ height: width / 1.5 }}>
-          <Text style={styles.headerText}>Popular Course</Text>
-          <Carousel
-            style={{ marginTop: SIZES.padding }}
-            loop
-            width={width}
-            autoPlay={true}
-            data={popularData?.data?.courses}
-            scrollAnimationDuration={1000}
-            // onSnapToItem={(index) => console.log('current index:', index)}
-            renderItem={({ item, index }) => (
-              <TouchableOpacity>
-                <Image style={[styles.carouselImage, { height: width / 2 }]} source={{
-                  uri: item.image
-                }} />
-              </TouchableOpacity>
-            )}
-          />
-        </View>
-        <View>
-          <Text style={styles.headerText}>Categories</Text>
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginVertical: 5 }}>
-            {
-              categoryData?.data?.categories.map(item => (
-                <CategoryButton key={item.id} category={item} />
-              ))
-            }
-          </View>
+      <View style={{paddingHorizontal:SIZES.padding2,paddingBottom:SIZES.padding}}>
+        <SearchBarComponent/>
+      </View>
+      <ScrollView showsVerticalScrollIndicator={false} style={globalStyles.container}>
+        <View style={{ ...globalStyles.subContainer, paddingBottom: SIZES.padding * 4 }}>
+
           <View>
-            <TitleWithSeeMore title={'Recommendation'} />
-            <View style={{ gap: 15 }}>
-              {
-                recommendedCourseData?.data?.courses?.map(item => (
-                  <CourseCard key={item.id} item={item} />
-                ))
-              }
+            <View >
+              <View>
+                <FlatList data={recommendedCourseData?.data?.courses} renderItem={({item,index})=>{
+                  return(
+                    <>
+                      {
+                        index===4 ? (
+                          <>
+                            <PopularCourseCard/>
+                            <CourseCard key={item.id} item={item} />
+                          </>
+                        ):(
+                          <CourseCard key={item.id} item={item} />
+                        )
+                      }
+
+                    </>
+                  )
+                }}/>
+
+              </View>
             </View>
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   )
 }
 

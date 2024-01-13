@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import globalStyles from "../../Global/Styles";
-import { COLORS, SIZES } from "../../Theme/Theme";
+import { COLORS, FONTS, SIZES } from "../../Theme/Theme";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -45,22 +45,22 @@ const ProfileScreen = props => {
   }
   const DynamicIcons = (tab) => {
     if (checkTab('Languages', tab) || checkTab('Paid course', tab)) {
-      return <AntDesign name={tab.icon} size={22} color={COLORS.black} />
+      return <AntDesign name={tab.icon} size={20} color={COLORS.black} />
     } else if (checkTab('Downloads', tab) || checkTab('Saved Course', tab)) {
-      return <Feather name={tab.icon} size={22} color={COLORS.black} />
+      return <Feather name={tab.icon} size={20} color={COLORS.black} />
     } else if (checkTab('Payment History', tab) || checkTab('Privacy & Policy', tab) ||
       checkTab('Logout', tab)) {
       if (checkTab('Logout', tab)) {
-        return <Octicons name={tab.icon} size={22} color={COLORS.primary} />
+        return <Octicons name={tab.icon} size={20} color={COLORS.primary} />
       }
-      return <Octicons name={tab.icon} size={22} color={COLORS.black} />
+      return <Octicons name={tab.icon} size={20} color={COLORS.black} />
     } else if (checkTab('Check Update', tab)) {
-      return <FontAwesome6 name={tab.icon} size={22} color={COLORS.black} />
+      return <FontAwesome6 name={tab.icon} size={20} color={COLORS.black} />
     } else if (checkTab('Contact Us', tab)) {
-      return <SimpleLineIcons name={tab.icon} size={22} color={COLORS.black} />
+      return <SimpleLineIcons name={tab.icon} size={20} color={COLORS.black} />
     }
     else {
-      return <Ionicons name={tab.icon} size={22} color={COLORS.black} />
+      return <Ionicons name={tab.icon} size={20} color={COLORS.black} />
     }
   }
 
@@ -93,8 +93,7 @@ const ProfileScreen = props => {
                 <View style={{ flexDirection: 'row', gap: SIZES.padding }}>
                   {DynamicIcons(tab)}
                   <Text style={{
-                    color: checkTab('Logout', tab) ? COLORS.primary : COLORS.black,
-                    fontSize: SIZES.h5
+                    color: checkTab('Logout', tab) ? COLORS.primary : COLORS.black,...FONTS.body5
                   }}>{tab.display}</Text>
                 </View>
                 <Feather name='chevron-right' color={checkTab('Logout', tab) ? COLORS.primary : COLORS.black} size={22} />
@@ -114,9 +113,9 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   profileImage: {
-    width: 65,
-    height: 65,
-    borderRadius: SIZES.roundRadius,
+    width: 60,
+    height: 60,
+    borderRadius: SIZES.roundRadius * 100,
     borderWidth: 2,
     borderColor: COLORS.primaryBorder,
     marginEnd: SIZES.padding
@@ -135,12 +134,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   name: {
-    fontSize: SIZES.h5,
+    ...FONTS.body4,
     marginBottom: 2,
     color: COLORS.black,
   },
   email: {
-    color: COLORS.black,
+    color: COLORS.darkgray,
+    ...FONTS.body5,
+
   },
   tabContainer: {
     flexDirection: 'row',

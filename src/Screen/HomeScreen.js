@@ -130,7 +130,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: SIZES.padding2 * 2,
     justifyContent: "space-between"
-
   },
   headerText: {
     ...FONTS.body4,
