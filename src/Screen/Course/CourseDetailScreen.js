@@ -7,7 +7,7 @@ import Carousel from "react-native-reanimated-carousel";
 import Foundation from 'react-native-vector-icons/Foundation';
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useQuery } from "react-query";
-import { buyCourseApi, getCoursesApi } from "../../api/api";
+import { buyCourseApi, getCoursesApi, toggleCourseSaved } from "../../api/api";
 import axios from "axios";
 import { AppContext } from "../../Provider/AppProvider";
 import { Vimeo } from "react-native-vimeo-iframe";
@@ -38,13 +38,13 @@ const CourseDetailScreen = () => {
 
   const toggleSaved = async () => {
     try {
-      let res = await axios.post(`${toggleSaved}/${id}`, {}, config);
+      let res = await axios.post(`${toggleCourseSaved}/${id}`, {}, config);
       refetchCourse();
     } catch (e) {
       Alert.alert('Error', e.message);
     }
   }
-  console.log(data?.data?.hasAccess);
+  console.log(data?.data?.course?.saved);
 
   return (
     <>
@@ -72,7 +72,7 @@ const CourseDetailScreen = () => {
                     <MaterialCommunityIcons size={30} name='share' color={COLORS.black} />
                   </TouchableOpacity>
                   <TouchableOpacity onPress={toggleSaved} style={{}}>
-                    <FontAwesome size={30} name='bookmark' color={COLORS.primary} />
+                    <FontAwesome size={30} name={data?.data?.course?.saved ? 'bookmark' : 'bookmark-o'} color={data?.data?.course?.saved ? COLORS.primary : COLORS.black} />
                   </TouchableOpacity>
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: SIZES.padding }}>

@@ -13,7 +13,7 @@ import { AppContext } from "../../Provider/AppProvider";
 
 
 const tabs = [
-  { icon: 'hearto', display: 'Favorites', screen: 'ChangeLanguageScreen' },
+  { icon: 'bookmark', display: 'Saved Course', screen: 'SavedCourseScreen' },
   { icon: 'download', display: 'Downloads', screen: 'ChangeLanguageScreen' },
   { icon: 'earth', display: 'Languages', screen: 'ChangeLanguageScreen' },
   { icon: 'pay-circle-o1', display: 'Paid course', screen: 'ChangeLanguageScreen' },
@@ -44,9 +44,9 @@ const ProfileScreen = props => {
     navigation.navigate(tab.screen);
   }
   const DynamicIcons = (tab) => {
-    if (checkTab('Languages', tab) || checkTab('Favorites', tab) || checkTab('Paid course', tab)) {
+    if (checkTab('Languages', tab) || checkTab('Paid course', tab)) {
       return <AntDesign name={tab.icon} size={22} color={COLORS.black} />
-    } else if (checkTab('Downloads', tab)) {
+    } else if (checkTab('Downloads', tab) || checkTab('Saved Course', tab)) {
       return <Feather name={tab.icon} size={22} color={COLORS.black} />
     } else if (checkTab('Payment History', tab) || checkTab('Privacy & Policy', tab) ||
       checkTab('Logout', tab)) {
