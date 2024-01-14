@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Alert, FlatList, View } from "react-native";
 import globalStyles from "../../Global/Styles";
 import ScreenHeaderBarComponent from "../../Component/ScreenHeaderBarComponent";
-import usePaginate from "../../hooks/usePaginate";
 import { getCoursesApi, getRecommendedCourse } from "../../api/api";
 import CourseCard from "../../Component/Course/CourseCard";
 import ListViewFooterComponent from "../../Component/ListViewFooterComponent";
