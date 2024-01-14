@@ -12,6 +12,8 @@ import axios from "axios";
 import { AppContext } from "../../Provider/AppProvider";
 import PopularCourseCard from "../../Component/Course/PopularCourseCard";
 import SearchBarComponent from "../../Component/SearchBarComponent";
+import ListViewFooterComponent from "../../Component/ListViewFooterComponent";
+import FullScreenShadowLoading from "../../Component/FullScreenShadowLoading";
 
 
 
@@ -20,8 +22,6 @@ const CourseScreen = props => {
   const width = Dimensions.get('window').width;
   const { config } = useContext(AppContext);
 
-  // const { data: popularData } = useQuery(popularCourseWithLimit, () => axios.get(popularCourseWithLimit, config));
-  // const { data: categoryData } = useQuery(courseCategoryApi, () => axios.get(courseCategoryApi, config));
 
   const [courses, setCourses] = useState([]);
   const [page, setPage] = useState(1);
@@ -39,10 +39,11 @@ const CourseScreen = props => {
   };
 
   const fetchCourses = async () => {
-    setIsFetching(true);
+    if (page === 1) {
+      setIsFetching(true);
+    }
     try {
       const response = await axios.get(`${getAllCoursesApi}?page=${page}`, config);
-      console.log(response.data.courses.next_page_url);
       if (!response.data.courses.next_page_url) {
         setEnd(true);
       }
@@ -67,44 +68,51 @@ const CourseScreen = props => {
 
 
   return (
-    <View style={{ backgroundColor: COLORS.white, flex: 1 }}>
-      <ScreenHeaderBarComponent headerText={'Course'} />
-      <View style={{ paddingHorizontal: SIZES.padding2, paddingBottom: SIZES.padding }}>
-        <SearchBarComponent />
-      </View>
-      {/*<ScrollView showsVerticalScrollIndicator={false} style={globalStyles.container}>*/}
-      <View style={{ ...globalStyles.subContainer, paddingBottom: SIZES.padding * 4 }}>
-        <View>
-          <View style={{ paddingBottom: 80 }}>
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              onEndReached={handleEnd}
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              onEndReachedThreshold={0.2}
-              data={courses} renderItem={({ item, index }) => {
-                return (
-                  <>
-                    {
-                      index === 4 ? (
+    <>
+      {
+        isFetching && !refreshing ?
+          <FullScreenShadowLoading />
+          :
+          <View style={{ backgroundColor: COLORS.white, flex: 1 }}>
+            <ScreenHeaderBarComponent headerText={'Course'} />
+            <View style={{ paddingHorizontal: SIZES.padding2, paddingBottom: SIZES.padding }}>
+              <SearchBarComponent />
+            </View>
+            <View style={{ ...globalStyles.subContainer, paddingBottom: SIZES.padding * 4 }}>
+              <View>
+                <View style={{ paddingBottom: 80 }}>
+                  <FlatList
+                    showsVerticalScrollIndicator={false}
+                    onEndReached={handleEnd}
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                    onEndReachedThreshold={0.2}
+                    data={courses} renderItem={({ item, index }) => {
+                      return (
                         <>
-                          <PopularCourseCard />
-                          <CourseCard key={item.id} item={item} />
+                          {
+                            index === 4 ? (
+                              <>
+                                <PopularCourseCard />
+                                <CourseCard key={item.id} item={item} />
+                              </>
+                            ) : (
+                              <CourseCard key={item.id} item={item} />
+                            )
+                          }
                         </>
-                      ) : (
-                        <CourseCard key={item.id} item={item} />
                       )
-                    }
+                    }}
+                    ListFooterComponent={() => <ListViewFooterComponent end={end} />}
+                  />
 
-                  </>
-                )
-              }} />
-
+                </View>
+              </View>
+            </View>
           </View>
-        </View>
-      </View>
-      {/*</ScrollView>*/}
-    </View>
+      }
+    </>
+
   )
 }
 

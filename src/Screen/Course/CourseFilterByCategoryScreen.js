@@ -7,6 +7,7 @@ import { AppContext } from "../../Provider/AppProvider";
 import ScreenHeaderBarComponent from "../../Component/ScreenHeaderBarComponent";
 import CourseCard from "../../Component/Course/CourseCard";
 import { SIZES } from "../../Theme/Theme";
+import FullScreenShadowLoading from "../../Component/FullScreenShadowLoading";
 
 const CourseFilterByCategoryScreen = props => {
 
@@ -20,7 +21,9 @@ const CourseFilterByCategoryScreen = props => {
 
 
   const fetchCourses = async (inputPage = null) => {
-    setLoading(true);
+    if (page === 1) {
+      setLoading(true);
+    }
     try {
       let res = await axios.get(`${getCoursesApi}?category_id=${id}&page=${inputPage ?? page}`, config);
       if (!res.data.courses.next_page_url) {
@@ -64,25 +67,31 @@ const CourseFilterByCategoryScreen = props => {
   return (
     <View style={globalStyles.container}>
       <ScreenHeaderBarComponent headerText={'Courses'} />
-      <View style={{ ...globalStyles.subContainer, paddingBottom: 100 }}>
-        {
-          !loading && courses.length === 0 &&
-          <View>
-            <Text>No course</Text>
+      {
+        loading ?
+          <FullScreenShadowLoading />
+          :
+          <View style={{ ...globalStyles.subContainer, paddingBottom: 100 }}>
+            {
+              !loading && courses.length === 0 &&
+              <View>
+                <Text>No course</Text>
+              </View>
+            }
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              data={courses}
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              onEndReached={handleEnd}
+              onEndReachedThreshold={0.4}
+              renderItem={({ item }) => (
+                <CourseCard item={item} />
+              )}
+            />
           </View>
-        }
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={courses}
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          onEndReached={handleEnd}
-          onEndReachedThreshold={0.4}
-          renderItem={({ item }) => (
-            <CourseCard item={item} />
-          )}
-        />
-      </View>
+      }
+
     </View>
   )
 }

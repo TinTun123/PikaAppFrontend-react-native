@@ -7,6 +7,7 @@ import { useQuery } from "react-query";
 import { courseCategoryApi } from "../../api/api";
 import axios from "axios";
 import { AppContext } from "../../Provider/AppProvider";
+import FullScreenShadowLoading from "../../Component/FullScreenShadowLoading";
 
 const FullCategoryScreen = props => {
 
@@ -15,20 +16,26 @@ const FullCategoryScreen = props => {
 
   const { config } = useContext(AppContext);
 
-  const { data } = useQuery(courseCategoryApi, () => axios.get(courseCategoryApi, config));
+  const { data, isLoading } = useQuery(courseCategoryApi, () => axios.get(courseCategoryApi, config));
 
-  console.log(data?.data?.categories);
+
+
   return (
     <View style={globalStyles.container}>
       <ScreenHeaderBarComponent headerText={header} />
-      <View style={globalStyles.subContainer}>
-        <FlatList
-          data={data?.data?.categories}
-          renderItem={({ item, index }) => (
-            <CategoryButton key={item.id} item={item} type={type} />
-          )}
-        />
-      </View>
+      {
+        isLoading ?
+          <FullScreenShadowLoading />
+          :
+          <View style={globalStyles.subContainer}>
+            <FlatList
+              data={data?.data?.categories}
+              renderItem={({ item, index }) => (
+                <CategoryButton key={item.id} item={item} type={type} />
+              )}
+            />
+          </View>
+      }
     </View>
   )
 }

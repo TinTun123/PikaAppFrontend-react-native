@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, TextInput, Pressable, Text, FlatList, Alert } from "react-native";
+import { View, StyleSheet, TextInput, Pressable, Text, FlatList, Alert, ActivityIndicator } from "react-native";
 import { COLORS, FONTS, SIZES } from "../../Theme/Theme";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -8,12 +8,14 @@ import axios from "axios";
 import { searchCoursesApi } from "../../api/api";
 import { AppContext } from "../../Provider/AppProvider";
 import { throttle } from 'lodash';
+import ListViewFooterComponent from "../../Component/ListViewFooterComponent";
 
 const SearchScreen = props => {
   const [searchText, setSearchText] = useState('');
   const [page, setPage] = useState(1);
   const [courses, setCourses] = useState([]);
   const [end, setEnd] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { config } = useContext(AppContext);
 
   const handleEnd = () => {
@@ -29,6 +31,9 @@ const SearchScreen = props => {
     if (!search) {
       return;
     }
+    if (currentPage === 1) {
+      setLoading(true);
+    }
     try {
       let res = await axios.get(`${searchCoursesApi}?search=${search ?? ''}&page=${currentPage}`, config);
       if (!res.data.courses.next_page_url) {
@@ -39,6 +44,7 @@ const SearchScreen = props => {
       } else {
         setCourses(pre => ([...pre, ...res.data.courses.data]));
       }
+      setLoading(false);
     } catch (e) {
       console.log(e)
       Alert.alert('Error', e.message);
@@ -95,24 +101,46 @@ const SearchScreen = props => {
         </View>
       </View>
       <View showsVerticalScrollIndicator={false} style={styles.subContainer}>
-        <FlatList
-          keyExtractor={(item, index) => index.toString()}
-          data={courses}
-          showsVerticalScrollIndicator={false}
-          onEndReached={handleEnd}
-          onEndReachedThreshold={0.2}
-          renderItem={({ item, index }) => (
-            <Pressable onPress={() => {
-              props.navigation.navigate("CourseDetailScreen", item.id);
-            }} android_ripple={{ color: COLORS.lightGray3 }} style={styles.listItem}>
-              <Text numberOfLines={1} ellipsizeMode={"tail"}
-                style={styles.resultText}>{item.title}</Text>
-              <Pressable android_ripple={{ color: COLORS.lightGray3 }}>
-                <Feather color={COLORS.black} size={20} name="arrow-up-right" />
+
+        {
+          loading ?
+            (<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.white }}>
+              <ActivityIndicator size={30} />
+            </View>) : null
+        }
+
+        {
+          !loading && courses.length === 0 && searchText &&
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.white }}>
+            <Text style={{ ...FONTS.body4 }}>No course found! </Text>
+          </View>
+        }
+
+        {
+          !loading && courses.length !== 0 &&
+          <FlatList
+            keyExtractor={(item, index) => index.toString()}
+            data={courses}
+            showsVerticalScrollIndicator={false}
+            onEndReached={handleEnd}
+            onEndReachedThreshold={0.2}
+            ListFooterComponent={() => (
+              <ListViewFooterComponent end={end} />
+            )}
+            renderItem={({ item, index }) => (
+              <Pressable onPress={() => {
+                props.navigation.navigate("CourseDetailScreen", item.id);
+              }} android_ripple={{ color: COLORS.lightGray3 }} style={styles.listItem}>
+                <Text numberOfLines={1} ellipsizeMode={"tail"}
+                  style={styles.resultText}>{item.title}</Text>
+                <Pressable android_ripple={{ color: COLORS.lightGray3 }}>
+                  <Feather color={COLORS.black} size={20} name="arrow-up-right" />
+                </Pressable>
               </Pressable>
-            </Pressable>
-          )} />
+            )} />
+        }
       </View>
+
     </View>
   );
 };

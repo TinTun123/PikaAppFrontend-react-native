@@ -9,6 +9,7 @@ import { useQuery } from "react-query";
 import axios from "axios";
 import { AppContext } from "../../Provider/AppProvider";
 import CategoryButton from "../../Component/CategoryButton";
+import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 
 
 const CategoryScreen = props => {
@@ -25,19 +26,45 @@ const CategoryScreen = props => {
       <ScreenHeaderBarComponent headerText={'Category'} />
       <View style={globalStyles.subContainer}>
         <TitleWithSeeMore handlePress={() => props.navigation.navigate('FullCategoryScreen', { type: 'course' })} title={'Course Category'} />
-        <FlatList
-          data={CourseCategory?.data?.categories}
-          renderItem={({ item }) => (
-            <CategoryButton key={item.id} item={item} type='course' />
-          )}
-        />
+        {
+          courseLoading ?
+            <FlatList
+              data={[1, 2, 3, 4]}
+              renderItem={({ item }) => (
+                <SkeletonPlaceholder key={item}>
+                  <SkeletonPlaceholder.Item width={'100%'} paddingVertical={SIZES.padding * 1.5}>
+                  </SkeletonPlaceholder.Item>
+                </SkeletonPlaceholder>
+              )}
+            /> :
+            <FlatList
+              data={CourseCategory?.data?.categories}
+              renderItem={({ item }) => (
+                <CategoryButton key={item.id} item={item} type='course' />
+              )}
+            />
+        }
+
         <TitleWithSeeMore handlePress={() => props.navigation.navigate('FullCategoryScreen', { type: 'course' })} title={'Podcast Category'} />
-        <FlatList
-          data={podcastCategory?.data?.categories}
-          renderItem={({ item }) => (
-            <CategoryButton key={item.id} item={item} type='podcast' />
-          )}
-        />
+        {
+          podcastLoading ?
+            <FlatList
+              data={[1, 2, 3, 4]}
+              renderItem={({ item }) => (
+                <SkeletonPlaceholder key={item}>
+                  <SkeletonPlaceholder.Item width={'100%'} paddingVertical={SIZES.padding * 1.5}>
+                  </SkeletonPlaceholder.Item>
+                </SkeletonPlaceholder>
+              )}
+            /> :
+            <FlatList
+              data={podcastCategory?.data?.categories}
+              renderItem={({ item }) => (
+                <CategoryButton key={item.id} item={item} type='podcast' />
+              )}
+            />
+        }
+
       </View>
     </View>
   )

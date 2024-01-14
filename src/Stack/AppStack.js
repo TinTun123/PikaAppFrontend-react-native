@@ -17,6 +17,7 @@ import UpdateScreen from "../Screen/Profile/Setting/UpdateScreen";
 import PrivacyAndPolicyScreen from "../Screen/Profile/Setting/PrivacyAndPolicyScreen";
 import TermAndConditionScreen from "../Screen/Profile/Setting/TermAndConditionScreen";
 import ContactUsScreen from "../Screen/Profile/Setting/ContactUsScreen";
+import RecommendedCourseScreen from "../Screen/Course/RecommendedCourseScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -40,6 +41,7 @@ function AppStack() {
         <Stack.Screen name='PrivacyAndPolicyScreen' component={PrivacyAndPolicyScreen} />
         <Stack.Screen name='TermAndConditionScreen' component={TermAndConditionScreen} />
         <Stack.Screen name='ContactUsScreen' component={ContactUsScreen} />
+        <Stack.Screen name='RecommendedCourseScreen' component={RecommendedCourseScreen} />
       </Stack.Navigator>
     </AppProvider>
   );

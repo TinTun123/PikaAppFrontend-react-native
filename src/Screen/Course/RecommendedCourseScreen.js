@@ -1,15 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { Alert, FlatList, View } from "react-native";
 import globalStyles from "../../Global/Styles";
-import { Alert, FlatList, StyleSheet, View } from "react-native";
 import ScreenHeaderBarComponent from "../../Component/ScreenHeaderBarComponent";
+import usePaginate from "../../hooks/usePaginate";
+import { getCoursesApi, getRecommendedCourse } from "../../api/api";
 import CourseCard from "../../Component/Course/CourseCard";
-import { COLORS, FONTS, SIZES } from "../../Theme/Theme";
-import { getSavedCourseApi } from "../../api/api";
-import axios from "axios";
+import ListViewFooterComponent from "../../Component/ListViewFooterComponent";
 import { AppContext } from "../../Provider/AppProvider";
+import axios from "axios";
+import { SIZES } from "../../Theme/Theme";
 import FullScreenShadowLoading from "../../Component/FullScreenShadowLoading";
 
-const SavedCourseScreen = (props) => {
+const RecommendedCourseScreen = () => {
 
   const { config } = useContext(AppContext);
   const [courses, setCourses] = useState([]);
@@ -17,6 +19,7 @@ const SavedCourseScreen = (props) => {
   const [isFetching, setIsFetching] = useState(false);
   const [end, setEnd] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+
 
   const handleEnd = () => {
     console.log('hello ', page);
@@ -35,7 +38,7 @@ const SavedCourseScreen = (props) => {
       setIsFetching(true);
     }
     try {
-      const res = await axios.get(`${getSavedCourseApi}?page=${page}`, config);
+      const res = await axios.get(`${getRecommendedCourse}&page=${page}`, config);
       if (!res.data.courses.next_page_url) {
         setEnd(true);
       }
@@ -56,27 +59,30 @@ const SavedCourseScreen = (props) => {
     fetchCourses();
   }, [page]);
 
+
+
   return (
     <View style={globalStyles.container}>
-      <ScreenHeaderBarComponent headerText={'Saved Course'} />
+      <ScreenHeaderBarComponent headerText={'Recommended Course'} />
+
       {
-        isFetching ?
-          <FullScreenShadowLoading />
-          :
-          <View style={{ ...globalStyles.subContainer, paddingBottom: 100 }}>
+        isFetching && !refreshing ?
+          <FullScreenShadowLoading /> :
+          <View style={{ ...globalStyles.subContainer, paddingBottom: '15%' }}>
             <FlatList
-              refreshing={refreshing}
-              showsVerticalScrollIndicator={false}
               data={courses}
-              onEndReached={handleEnd}
-              onEndReachedThreshold={0.3}
+              showsVerticalScrollIndicator={false}
               onRefresh={onRefresh}
-              keyExtractor={(_, index) => index.toString()}
+              refreshing={refreshing}
+              onEndReached={handleEnd}
+              onEndReachedThreshold={0.2}
               renderItem={({ item }) => (
-                <CourseCard key={item.id} item={item} />
+                <CourseCard item={item} key={item.id} />
+              )}
+              ListFooterComponent={() => (
+                <ListViewFooterComponent end={end} />
               )}
             />
-
           </View>
       }
 
@@ -84,7 +90,4 @@ const SavedCourseScreen = (props) => {
   )
 }
 
-const styles = StyleSheet.create({
-
-})
-export default SavedCourseScreen;
+export default RecommendedCourseScreen;

@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import {
+  ActivityIndicator,
   Alert,
   Image,
   Keyboard,
@@ -24,14 +25,17 @@ const LoginScreen = (props) => {
 
   const { handleLogin } = useContext(AuthContext);
   const [data, setData] = useState({});
+  const [loading, setLoading] = useState(false);
 
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     let fields = ["email", "password"];
     if (fields.some(field => !data[field])) {
       Alert.alert("Error", "Please fill in all the fields!");
     } else {
-      handleLogin(data);
+      setLoading(true);
+      await handleLogin(data);
+      setLoading(false);
     }
   };
 
@@ -83,11 +87,15 @@ const LoginScreen = (props) => {
                     style={styles.button}
                     onPress={handleSubmit}
                   >
-                    <Text style={styles.btnText}>Login Now</Text>
+                    {
+                      loading ?
+                        <ActivityIndicator size={30} color={COLORS.white} /> :
+                        <Text style={styles.btnText}>Login Now</Text>
+                    }
                   </TouchableOpacity>
 
                   <TouchableOpacity style={{ marginTop: SIZES.padding2 }}
-                                    onPress={() => props.navigation.navigate("SignupScreen")}>
+                    onPress={() => props.navigation.navigate("SignupScreen")}>
                     <Text style={{ ...FONTS.body5, color: COLORS.secondInfo, textAlign: "center" }}>Don't have any
                       account , Please Signup</Text>
                   </TouchableOpacity>
