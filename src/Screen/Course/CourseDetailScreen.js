@@ -1,10 +1,10 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from "react";
 import { Alert, Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import globalStyles from "../../Global/Styles";
 import ScreenHeaderBarComponent from "../../Component/ScreenHeaderBarComponent";
 import { COLORS, FONTS, SIZES } from "../../Theme/Theme";
 import Carousel from "react-native-reanimated-carousel";
-import Foundation from 'react-native-vector-icons/Foundation';
+import Foundation from "react-native-vector-icons/Foundation";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useQuery } from "react-query";
 import { buyCourseApi, getCoursesApi, toggleCourseSaved } from "../../api/api";
@@ -12,18 +12,23 @@ import axios from "axios";
 import { AppContext } from "../../Provider/AppProvider";
 import { Vimeo } from "react-native-vimeo-iframe";
 import { formatVideoDuration } from "../../Global/Methods";
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 
 const CourseDetailScreen = () => {
   const navigation = useNavigation();
-  const width = Dimensions.get('window').width - 38;
+  const width = Dimensions.get("window").width - 38;
   const { params: id } = useRoute();
   const { config } = useContext(AppContext);
 
 
-  const { data, isLoading, isError, refetch: refetchCourse } = useQuery(`${getCoursesApi}/${id}}`, () => axios.get(`${getCoursesApi}/${id}}`, config));
+  const {
+    data,
+    isLoading,
+    isError,
+    refetch: refetchCourse,
+  } = useQuery(`${getCoursesApi}/${id}}`, () => axios.get(`${getCoursesApi}/${id}}`, config));
 
   const buyCourse = async () => {
     if (!isLoading) {
@@ -31,69 +36,83 @@ const CourseDetailScreen = () => {
         let res = await axios.post(`${buyCourseApi}/${id}`, {}, config);
         refetchCourse();
       } catch (e) {
-        Alert.alert('Error', e.message);
+        Alert.alert("Error", e.message);
       }
     }
-  }
+  };
 
   const toggleSaved = async () => {
     try {
       let res = await axios.post(`${toggleCourseSaved}/${id}`, {}, config);
       refetchCourse();
     } catch (e) {
-      Alert.alert('Error', e.message);
+      Alert.alert("Error", e.message);
     }
-  }
-  console.log(data?.data?.course?.saved);
+  };
+
+  useEffect(()=>{
+    console.log(data?.data);
+
+  },[data])
 
   return (
     <>
       {
         !isLoading ?
-          <ScrollView style={{ ...globalStyles.container, position: 'relative' }}>
-            <ScreenHeaderBarComponent headerText={data?.data?.course?.title} />
-            <View style={{ ...globalStyles.subContainer }}>
+          <View style={{ flex:1,backgroundColor:COLORS.white}}>
+            <ScreenHeaderBarComponent headerText={"Course Detail"} />
+            <View style={{ flex:1,padding:SIZES.padding2,width:'100%' }}>
               {
                 data?.data?.hasAccess ?
-                  <TouchableOpacity onPress={() => navigation.navigate('CourseWatchingScreen', id)} style={{ position: 'absolute', backgroundColor: COLORS.primary, paddingHorizontal: SIZES.padding * 2, paddingVertical: SIZES.padding, borderRadius: SIZES.roundRadius, zIndex: 10, flexDirection: 'row', gap: 5, bottom: 0, right: 20 }}>
-                    <Text style={{ color: COLORS.white }}>Watch Lesson</Text>
-                  </TouchableOpacity> :
-                  <TouchableOpacity onPress={buyCourse} style={{ position: 'absolute', backgroundColor: COLORS.primary, paddingHorizontal: SIZES.padding * 2, paddingVertical: SIZES.padding, borderRadius: SIZES.roundRadius, zIndex: 10, flexDirection: 'row', gap: 5, bottom: 0, right: 20 }}>
-                    <Foundation name='dollar' color={COLORS.white} size={20} />
-                    <Text style={{ color: COLORS.white }}>Buy Now</Text>
-                  </TouchableOpacity>
+                  <View style={styles.enrollBtnContainer}>
+                    <TouchableOpacity onPress={() => navigation.navigate("CourseWatchingScreen", id)} style={{
+                      width:'90%',
+                      height: 45,
+                      backgroundColor: COLORS.primary,
+                      borderRadius: SIZES.roundRadius,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}>
+                      <Text style={{ color: COLORS.white,...FONTS.body4 }}>Watch Lesson</Text>
+                    </TouchableOpacity>
+                  </View>
+                  :
+                  <View style={[styles.enrollBtnContainer,{justifyContent:"space-between",flexDirection:"row",paddingHorizontal:SIZES.padding2}]}>
+                    <Text style={{...FONTS.body3,color:COLORS.dodgerBlue}}>{(+data?.data?.course?.price)?.toLocaleString("en-US")} MMK</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate("CourseWatchingScreen", id)} style={{
+                      width:'30%',
+                      height: 45,
+                      backgroundColor: COLORS.primary,
+                      borderRadius: SIZES.roundRadius,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}>
+                      <Text style={{ color: COLORS.white,...FONTS.body4 }}>Enroll Now</Text>
+                    </TouchableOpacity>
+                  </View>
+
               }
               <View>
-                <Image style={{ ...styles.courseImage, height: width / 1.7 }} source={{
-                  uri: data?.data?.course?.image
-                }} />
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: COLORS.subGray, padding: SIZES.padding, }}>
-                  <TouchableOpacity style={{}}>
-                    <MaterialCommunityIcons size={30} name='share' color={COLORS.black} />
+                <View>
+                  <TouchableOpacity onPress={toggleSaved} style={styles.iconContainer}>
+                    <FontAwesome size={17} name={data?.data?.course?.saved ? "heart" : "heart-o"}
+                                 color={data?.data?.course?.saved ? COLORS.primary : COLORS.darkgray} />
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={toggleSaved} style={{}}>
-                    <FontAwesome size={30} name={data?.data?.course?.saved ? 'bookmark' : 'bookmark-o'} color={data?.data?.course?.saved ? COLORS.primary : COLORS.black} />
-                  </TouchableOpacity>
+                  <Image style={{ ...styles.courseImage, height: width / 1.7 }} source={{
+                    uri: data?.data?.course?.image,
+                  }} />
                 </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: SIZES.padding }}>
-                  <View style={{ backgroundColor: COLORS.subGray, width: '48%', padding: SIZES.padding, borderRadius: SIZES.radius }}>
-                    <Text>Duration</Text>
-                    <Text style={{ ...FONTS.body3, color: COLORS.black }}>
-                      {formatVideoDuration(data?.data?.course?.totalVideoLength, true)}
-                    </Text>
-                  </View>
-                  <View style={{ backgroundColor: COLORS.subGray, width: '48%', padding: SIZES.padding, borderRadius: SIZES.radius }}>
-                    <Text>Fee</Text>
-                    <Text style={{ ...FONTS.body3, color: COLORS.black }}>{(+data?.data?.course?.price)?.toLocaleString('en-US')} mmk</Text>
+                <View>
+                  <Text style={styles.titleText}>{data?.data?.course?.title}</Text>
+                  <View style={{ marginBottom: SIZES.padding2 }}>
+                    <Text style={{ ...FONTS.body4,color:COLORS.black }}>Description</Text>
+                    <Text style={{ ...FONTS.body6, color: COLORS.darkgray }}>{data?.data?.course?.description}asdfasdfajsdfjadksfjalksdfjakj
+                      ksjadfklajsdfjaiosdjfia jiajs Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi eius
+                      enim fugit hic ipsam nesciunt, nobis provident quae, quam sequi sit tempore. Eius eos ex quos
+                      sapiente sequi velit, voluptatem?</Text>
                   </View>
                 </View>
-                <View style={styles.instructorContainer}>
-                  <Image style={styles.instructorProfile} source={require('../../Graphic/DummyImage/profile.png')} />
-                  <View>
-                    <Text style={{ ...FONTS.body4, color: COLORS.black }}>Ko Phyo Thiha  </Text>
-                    <Text style={{ ...FONTS.body4, color: COLORS.primary }}>Founder & CEO at Pika Sharing</Text>
-                  </View>
-                </View>
+
 
                 {
                   data?.data?.course?.testimonials ?
@@ -109,16 +128,16 @@ const CourseDetailScreen = () => {
                         renderItem={({ item }) => (
                           <>
                             {
-                              item.type === 'video' ?
+                              item.type === "video" ?
                                 <View style={{ height: width / 1.7 }}>
                                   <Vimeo
                                     style={{ flex: 1 }}
                                     videoId={item.file}
-                                    params={'api=1&autoplay=0'}
+                                    params={"api=1&autoplay=0"}
                                   />
                                 </View> :
                                 <Image style={[styles.carouselImage, { height: width / 1.7 }]} source={{
-                                  uri: item.file
+                                  uri: item.file,
                                 }} />
                             }
                           </>
@@ -130,37 +149,37 @@ const CourseDetailScreen = () => {
                 }
               </View>
             </View>
-          </ScrollView >
+          </View>
           : null
       }
 
     </>
 
-  )
-}
-
+  );
+};
 
 
 const styles = StyleSheet.create({
   courseImage: {
     height: 230,
     resizeMode: "cover",
-    borderRadius: SIZES.radius,
-    width: '100%'
+    borderRadius: SIZES.radius * 1.4,
+    width: "100%",
+
   },
   instructorContainer: {
     backgroundColor: COLORS.subGray,
     padding: SIZES.padding,
     borderRadius: SIZES.radius,
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: SIZES.padding,
-    alignItems: 'center',
-    marginBottom: SIZES.padding
+    alignItems: "center",
+    marginBottom: SIZES.padding,
   },
   instructorProfile: {
     width: 50,
     height: 50,
-    borderRadius: SIZES.roundRadius
+    borderRadius: SIZES.roundRadius,
   },
   headerText: {
     ...FONTS.body4,
@@ -170,7 +189,45 @@ const styles = StyleSheet.create({
     height: 230,
     resizeMode: "cover",
     borderRadius: SIZES.radius,
-    width: '100%'
+    width: "100%",
   },
-})
+  iconContainer: {
+    position: "absolute",
+    right: "4%",
+    top: "4%",
+    width: 30,
+    height: 30,
+    zIndex:4000,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: COLORS.white,
+    borderRadius: SIZES.roundRadius,
+  },
+  titleText: {
+    ...FONTS.body3,
+    color: COLORS.black,
+    marginVertical: SIZES.padding,
+  },
+  enrollBtnContainer: {
+    width:SIZES.width,
+    height: 70,
+    backgroundColor:COLORS.white,
+    position: "absolute",
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex:3000,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+
+    elevation: 7,
+
+  },
+
+});
 export default CourseDetailScreen;
