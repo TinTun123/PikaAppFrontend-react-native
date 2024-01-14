@@ -6,10 +6,10 @@ import { COLORS, FONTS } from "../Theme/Theme";
 import Feather from "react-native-vector-icons/Feather";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import FavoriteScreen from "./FavouriteScreen";
 import ProfileScreen from "./Profile/ProfileScreen";
 import PodcastScreen from "./PodcastScreen";
 import CourseScreen from "./Course/CourseScreen";
+import CategoryScreen from "./Category/CategoryScreen";
 
 const Stack = createBottomTabNavigator();
 const Icon = ({ name, focused, text }) => {
@@ -57,9 +57,9 @@ function BottomTabScreen() {
         options={{ tabBarIcon: ({ focused }) => <Icon name={"play-lesson"} text={"Course"} focused={focused} /> }}
       />
       <Stack.Screen
-        name="FavoriteScreen"
-        component={FavoriteScreen}
-        options={{ tabBarIcon: ({ focused }) => <Icon name={"heart"} text={"Favorite"} focused={focused} /> }}
+        name="CategoryScreen"
+        component={CategoryScreen}
+        options={{ tabBarIcon: ({ focused }) => <Icon name={"grid"} text={"Category"} focused={focused} /> }}
       />
       <Stack.Screen
         name="ProfileScreen"

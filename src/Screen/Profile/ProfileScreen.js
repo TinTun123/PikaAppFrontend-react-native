@@ -14,15 +14,15 @@ import { AppContext } from "../../Provider/AppProvider";
 
 const tabs = [
   { icon: 'bookmark', display: 'Saved Course', screen: 'SavedCourseScreen' },
-  { icon: 'download', display: 'Downloads', screen: 'ChangeLanguageScreen' },
+  { icon: 'download', display: 'Downloads', screen: 'DownloadScreen' },
   { icon: 'earth', display: 'Languages', screen: 'ChangeLanguageScreen' },
-  { icon: 'pay-circle-o1', display: 'Paid course', screen: 'ChangeLanguageScreen' },
-  { icon: 'history', display: 'Payment History', screen: 'ChangeLanguageScreen' },
-  { icon: 'rotate', display: 'Check Update', screen: 'ChangeLanguageScreen' },
-  { icon: 'shield-lock', display: 'Privacy & Policy', screen: 'ChangeLanguageScreen' },
-  { icon: 'document-text-outline', display: 'Terms & Conditions', screen: 'ChangeLanguageScreen' },
-  { icon: 'earphones-alt', display: 'Contact Us', screen: 'ChangeLanguageScreen' },
-  { icon: 'sign-out', display: 'Logout', screen: 'ChangeLanguageScreen' },
+  { icon: 'pay-circle-o1', display: 'Paid course', screen: 'PaidCourseScreen' },
+  { icon: 'history', display: 'Payment History', screen: 'PaymentHistoryScreen' },
+  { icon: 'rotate', display: 'Check Update', screen: 'UpdateScreen' },
+  { icon: 'shield-lock', display: 'Privacy & Policy', screen: 'PrivacyAndPolicyScreen' },
+  { icon: 'document-text-outline', display: 'Terms & Conditions', screen: 'TermAndConditionScreen' },
+  { icon: 'earphones-alt', display: 'Contact Us', screen: 'ContactUsScreen' },
+  { icon: 'sign-out', display: 'Logout', screen: null },
 ];
 
 
@@ -93,7 +93,7 @@ const ProfileScreen = props => {
                 <View style={{ flexDirection: 'row', gap: SIZES.padding }}>
                   {DynamicIcons(tab)}
                   <Text style={{
-                    color: checkTab('Logout', tab) ? COLORS.primary : COLORS.black,...FONTS.body5
+                    color: checkTab('Logout', tab) ? COLORS.primary : COLORS.black, ...FONTS.body5
                   }}>{tab.display}</Text>
                 </View>
                 <Feather name='chevron-right' color={checkTab('Logout', tab) ? COLORS.primary : COLORS.black} size={22} />
