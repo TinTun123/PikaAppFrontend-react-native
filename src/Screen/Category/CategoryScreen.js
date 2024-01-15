@@ -31,16 +31,16 @@ const CategoryScreen = props => {
       <ScreenHeaderBarComponent headerText={"Category"} />
       <View style={globalStyles.subContainer}>
         <TitleWithSeeMore showSeeMore={false}
-                          handlePress={() => props.navigation.navigate("FullCategoryScreen", { type: "course" })}
-                          title={"Course Category"} />
+          handlePress={() => props.navigation.navigate("FullCategoryScreen", { type: "course" })}
+          title={"Course Category"} />
         {
           courseLoading ?
             <>
-              <View style={{flexDirection:"row",flexWrap:"wrap",justifyContent:"center"}}>
+              <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "center" }}>
                 {
-                  [1,2,3,4,5,6].map((item)=>{
-                    return(
-                      <View style={{width:'31%',height:40,marginEnd:'1%',marginBottom:'1%'}}>
+                  [1, 2, 3, 4, 5, 6].map((item) => {
+                    return (
+                      <View key={item} style={{ width: '31%', height: 40, marginEnd: '1%', marginBottom: '1%' }}>
                         <SkeletonPlaceholder key={item}>
                           <SkeletonPlaceholder.Item width={"100%"} height={40} borderRadius={SIZES.radius}>
                           </SkeletonPlaceholder.Item>
@@ -68,16 +68,16 @@ const CategoryScreen = props => {
         }
 
         <TitleWithSeeMore showSeeMore={false}
-                          handlePress={() => props.navigation.navigate("FullCategoryScreen", { type: "course" })}
-                          title={"Podcast Category"} />
+          handlePress={() => props.navigation.navigate("FullCategoryScreen", { type: "course" })}
+          title={"Podcast Category"} />
         {
           podcastLoading ?
             <>
-              <View style={{flexDirection:"row",flexWrap:"wrap",justifyContent:"center"}}>
+              <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "center" }}>
                 {
-                  [1,2,3,4,5,6].map((item)=>{
-                    return(
-                      <View style={{width:'31%',height:40,marginEnd:'1%',marginBottom:'1%'}}>
+                  [1, 2, 3, 4, 5, 6].map((item) => {
+                    return (
+                      <View key={item.id} style={{ width: '31%', height: 40, marginEnd: '1%', marginBottom: '1%' }}>
                         <SkeletonPlaceholder key={item}>
                           <SkeletonPlaceholder.Item width={"100%"} height={40} borderRadius={SIZES.radius}>
                           </SkeletonPlaceholder.Item>
