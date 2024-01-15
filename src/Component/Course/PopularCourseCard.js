@@ -42,7 +42,7 @@ const PopularCourseCard = props => {
               horizontal
               showsHorizontalScrollIndicator={false}
               renderItem={({ item, index }) => (
-                <View style={styles.cardContainer}>
+                <TouchableOpacity onPress={() => navigation.navigate("CourseDetailScreen", item.id)} style={styles.cardContainer}>
                   <Image style={styles.image} source={{
                     uri: item.image
                   }} />
@@ -51,7 +51,7 @@ const PopularCourseCard = props => {
                     <Text style={{ ...FONTS.body6, color: COLORS.darkgray }}>Module : {item.modules_count} Lesson : {item.videos_count}</Text>
                     <Text style={{ ...FONTS.body4, color: COLORS.primary }}>{(+item.price)?.toLocaleString('en-US')} MMK</Text>
                   </View>
-                </View>
+                </TouchableOpacity>
               )}
             />
           )

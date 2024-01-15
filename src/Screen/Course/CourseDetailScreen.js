@@ -61,94 +61,101 @@ const CourseDetailScreen = () => {
         !isLoading ?
           <View style={{ flex:1,backgroundColor:COLORS.white}}>
             <ScreenHeaderBarComponent headerText={"Course Detail"} />
-            <View style={{ flex:1,padding:SIZES.padding2,width:'100%' }}>
-              {
-                data?.data?.hasAccess ?
-                  <View style={styles.enrollBtnContainer}>
-                    <TouchableOpacity onPress={() => navigation.navigate("CourseWatchingScreen", id)} style={{
-                      width:'90%',
-                      height: 45,
-                      backgroundColor: COLORS.primary,
-                      borderRadius: SIZES.roundRadius,
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}>
-                      <Text style={{ color: COLORS.white,...FONTS.body4 }}>Watch Lesson</Text>
-                    </TouchableOpacity>
-                  </View>
-                  :
-                  <View style={[styles.enrollBtnContainer,{justifyContent:"space-between",flexDirection:"row",paddingHorizontal:SIZES.padding2}]}>
-                    <Text style={{...FONTS.body3,color:COLORS.dodgerBlue}}>{(+data?.data?.course?.price)?.toLocaleString("en-US")} MMK</Text>
-                    <TouchableOpacity onPress={() => navigation.navigate("CourseWatchingScreen", id)} style={{
-                      width:'30%',
-                      height: 45,
-                      backgroundColor: COLORS.primary,
-                      borderRadius: SIZES.roundRadius,
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}>
-                      <Text style={{ color: COLORS.white,...FONTS.body4 }}>Enroll Now</Text>
-                    </TouchableOpacity>
-                  </View>
-
-              }
-              <View>
-                <View>
-                  <TouchableOpacity onPress={toggleSaved} style={styles.iconContainer}>
-                    <FontAwesome size={17} name={data?.data?.course?.saved ? "heart" : "heart-o"}
-                                 color={data?.data?.course?.saved ? COLORS.primary : COLORS.darkgray} />
+            {
+              data?.data?.hasAccess ?
+                <View style={styles.enrollBtnContainer}>
+                  <TouchableOpacity onPress={() => navigation.navigate("CourseWatchingScreen", id)} style={{
+                    width:'90%',
+                    height: 45,
+                    backgroundColor: COLORS.primary,
+                    borderRadius: SIZES.roundRadius,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}>
+                    <Text style={{ color: COLORS.white,...FONTS.body4 }}>Watch Lesson</Text>
                   </TouchableOpacity>
-                  <Image style={{ ...styles.courseImage, height: width / 1.7 }} source={{
-                    uri: data?.data?.course?.image,
-                  }} />
                 </View>
+                :
+                <View style={[styles.enrollBtnContainer,{justifyContent:"space-between",flexDirection:"row",paddingHorizontal:SIZES.padding2}]}>
+                  <Text style={{...FONTS.body3,color:COLORS.dodgerBlue}}>{(+data?.data?.course?.price)?.toLocaleString("en-US")} MMK</Text>
+                  <TouchableOpacity onPress={() => buyCourse()} style={{
+                    width:'30%',
+                    height: 45,
+                    backgroundColor: COLORS.primary,
+                    borderRadius: SIZES.roundRadius,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}>
+                    <Text style={{ color: COLORS.white,...FONTS.body4 }}>Enroll Now</Text>
+                  </TouchableOpacity>
+                </View>
+            }
+            <View style={{ flex:1,paddingBottom:80,paddingHorizontal:SIZES.padding2 * 1.4,paddingTop:SIZES.padding2 * 1.4,width:'100%' }}>
+              <ScrollView showsVerticalScrollIndicator={false}>
+
+
                 <View>
-                  <Text style={styles.titleText}>{data?.data?.course?.title}</Text>
-                  <View style={{ marginBottom: SIZES.padding2 }}>
-                    <Text style={{ ...FONTS.body4,color:COLORS.black }}>Description</Text>
-                    <Text style={{ ...FONTS.body6, color: COLORS.darkgray }}>{data?.data?.course?.description}asdfasdfajsdfjadksfjalksdfjakj
-                      ksjadfklajsdfjaiosdjfia jiajs Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi eius
-                      enim fugit hic ipsam nesciunt, nobis provident quae, quam sequi sit tempore. Eius eos ex quos
-                      sapiente sequi velit, voluptatem?</Text>
+                  <View>
+                    <TouchableOpacity onPress={toggleSaved} style={styles.iconContainer}>
+                      <FontAwesome size={17} name={data?.data?.course?.saved ? "heart" : "heart-o"}
+                                   color={data?.data?.course?.saved ? COLORS.primary : COLORS.darkgray} />
+                    </TouchableOpacity>
+                    <Image style={{ ...styles.courseImage, height: width / 1.7 }} source={{
+                      uri: data?.data?.course?.image,
+                    }} />
                   </View>
-                </View>
-
-
-                {
-                  data?.data?.course?.testimonials ?
-                    <View>
-                      <Text style={styles.headerText}>Testimonials</Text>
-                      <Carousel
-                        style={{ height: width / 1.75, marginTop: SIZES.padding }}
-                        loop
-                        width={width}
-                        data={data.data.course.testimonials}
-                        scrollAnimationDuration={3000}
-                        // onSnapToItem={(index) => console.log('current index:', index)}
-                        renderItem={({ item }) => (
-                          <>
-                            {
-                              item.type === "video" ?
-                                <View style={{ height: width / 1.7 }}>
-                                  <Vimeo
-                                    style={{ flex: 1 }}
-                                    videoId={item.file}
-                                    params={"api=1&autoplay=0"}
-                                  />
-                                </View> :
-                                <Image style={[styles.carouselImage, { height: width / 1.7 }]} source={{
-                                  uri: item.file,
-                                }} />
-                            }
-                          </>
-
-                        )}
-                      />
+                  <View>
+                    <Text style={styles.titleText}>{data?.data?.course?.title}</Text>
+                    <View style={{ marginBottom: SIZES.padding2 }}>
+                      <Text style={{ ...FONTS.body4,color:COLORS.black }}>Description</Text>
+                      <Text style={{ ...FONTS.body6, color: COLORS.darkgray }}>{data?.data?.course?.description}asdfasdfajsdfjadksfjalksdfjakj
+                        ksjadfklajsdfjaiosdjfia jiajs Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi eius
+                        enim fugit hic ipsam nesciunt, nobis provident quae, quam sequi sit tempore. Eius eos ex quosasdfasdfajsdfjadksfjalksdfjakj
+                        ksjadfklajsdfjaiosdjfia jiajs Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi eius
+                        enim fugit hic ipsam nesciunt, nobis provident quae, quam sequi sit tempore. Eius eos ex quos
+                        sapiente sequi velit, voluptatem?</Text>
                     </View>
-                    : null
-                }
-              </View>
+                  </View>
+
+
+                  {
+                    data?.data?.course?.testimonials ?
+                      <View>
+                        <Text style={styles.headerText}>Testimonials</Text>
+                        <Carousel
+                          style={{ height: width / 1.75 }}
+                          loop
+                          width={width}
+                          data={data.data.course.testimonials}
+                          scrollAnimationDuration={3000}
+                          // onSnapToItem={(index) => console.log('current index:', index)}
+                          renderItem={({ item }) => (
+                            <>
+                              {
+                                item.type === "video" ?
+                                  <View style={{ height: width / 1.7 }}>
+                                    <Vimeo
+                                      style={{ flex: 1 }}
+                                      videoId={item.file}
+                                      params={"api=1&autoplay=0"}
+                                    />
+                                  </View> :
+                                  <Image style={[styles.carouselImage, { height: width / 1.7 }]} source={{
+                                    uri: item.file,
+                                  }} />
+                              }
+                            </>
+
+                          )}
+                        />
+                      </View>
+                      : null
+                  }
+                </View>
+              </ScrollView>
+
             </View>
+
           </View>
           : null
       }
