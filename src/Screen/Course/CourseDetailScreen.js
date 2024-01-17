@@ -118,6 +118,7 @@ const CourseDetailScreen = () => {
                   </View>
 
 
+
                   {
                     data?.data?.course?.testimonials ?
                       <View>

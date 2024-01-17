@@ -49,14 +49,13 @@ const PopularCourseCard = props => {
                   <View style={styles.textContainer}>
                     <Text style={{ ...FONTS.body5, color: COLORS.black }}>{item.title}</Text>
                     <Text style={{ ...FONTS.body6, color: COLORS.darkgray }}>Module : {item.modules_count} Lesson : {item.videos_count}</Text>
-                    <Text style={{ ...FONTS.body4, color: COLORS.primary }}>{(+item.price)?.toLocaleString('en-US')} MMK</Text>
+                    <Text style={{ ...FONTS.body5, color: COLORS.primary }}>{(+item.price)?.toLocaleString('en-US')} MMK</Text>
                   </View>
                 </TouchableOpacity>
               )}
             />
           )
       }
-
     </View>
   );
 };
