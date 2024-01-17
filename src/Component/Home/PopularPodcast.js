@@ -11,7 +11,11 @@ const PopularPodcast = () => {
 
   const { config } = useContext(AppContext);
 
-  const { isLoading, isError, data } = useQuery(popularPodcastsWithLimit, () => axios.get(popularPodcastsWithLimit, config))
+  const { isLoading, isError, data } = useQuery(popularPodcastsWithLimit, () => axios.get(popularPodcastsWithLimit, config), {
+    onError: (e) => {
+      console.log(e);
+    }
+  })
 
   return (
     <View style={{ gap: 15 }}>

@@ -8,8 +8,8 @@ export const resetPasswordApi = '/reset-password';
 export const getUserInfoApi = '/user';
 export const logoutApi = '/logout';
 export const sliderApi = '/sliders';
-export const popularPodcastsWithLimit = '/podcasts/popular?limit=3'
-export const recommendedPodcastsWithLimit = '/podcasts/recommended?limit=3';
+export const popularPodcastsWithLimit = '/popular/podcasts?limit=3'
+export const recommendedPodcastsWithLimit = '/recommended/podcasts?limit=3';
 
 
 export const podcastsApi = '/podcasts';
