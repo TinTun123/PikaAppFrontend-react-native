@@ -13,6 +13,7 @@ export const recommendedPodcastsWithLimit = '/podcasts/recommended?limit=3';
 
 
 export const podcastsApi = '/podcasts';
+export const getSinglePodcastApi = '/podcasts';
 
 export const podcastCategoryApi = '/categories/podcast';
 

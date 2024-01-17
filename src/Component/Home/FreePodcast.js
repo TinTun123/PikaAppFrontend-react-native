@@ -7,17 +7,19 @@ import { useQuery } from "react-query";
 import { podcastsApi } from "../../api/api";
 import axios from "axios";
 import { AppContext } from "../../Provider/AppProvider";
+import { useNavigation } from "@react-navigation/native";
 
 const FreePodcast = () => {
 
   const { config } = useContext(AppContext);
+  const navigation = useNavigation();
 
   let url = podcastsApi + '?type=free&limit=4';
   const { data, isLoading, isError } = useQuery(url, () => axios.get(url, config));
 
   const Card = ({ item }) => {
     return (
-      <TouchableOpacity style={styles.cardContainer}>
+      <TouchableOpacity onPress={() => navigation.navigate('PodcastDetailScreen', { id: item.id })} style={styles.cardContainer}>
         <Image style={{ width: 60, height: 60, borderRadius: SIZES.radius }} source={{
           uri: item.image
         }} />

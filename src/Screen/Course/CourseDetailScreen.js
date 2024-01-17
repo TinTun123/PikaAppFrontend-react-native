@@ -90,7 +90,6 @@ const CourseDetailScreen = () => {
                       <Text style={{ color: COLORS.white, ...FONTS.body4 }}>Enroll Now</Text>
                     </TouchableOpacity>
                   </View>
-
               }
               <View>
                 <View>

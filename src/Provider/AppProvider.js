@@ -6,6 +6,8 @@ import i18n from "../../services/ i18n";
 import { useTranslation } from "react-i18next";
 import { Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import TrackPlayer from "react-native-track-player";
+import { setupPlayer } from "../../services/trackPlayerServices";
 
 
 export const AppContext = createContext();
@@ -17,6 +19,8 @@ const AppProvider = ({ children }) => {
 
   const { token, setAlreadyLogin, setToken } = useContext(AuthContext);
   const [user, setUser] = useState({});
+  const [isPlayerReady, setIsPlayerReady] = useState(false);
+  const [podcast, setPodcast] = useState({});
 
   let config = {
     baseURL: BASE_URL,
@@ -25,6 +29,29 @@ const AppProvider = ({ children }) => {
       "Authorization": `Bearer ${token}`,
     },
   };
+
+  const setup = async () => {
+    let isSetup = await setupPlayer();
+    // const queue = await TrackPlayer.getQueue();
+    // if (isSetup && queue.length <= 0) {
+    //   await TrackPlayer.add([
+    //     {
+    //       id: podcast.id,
+    //       url: podcast.playable_file,
+    //       title: podcast.title,
+    //       artist: 'no artist',
+    //       duration: podcast.duration,
+    //     }
+    //   ]);
+    // }
+    setIsPlayerReady(isSetup);
+  }
+
+  useEffect(() => {
+    setup();
+  }, []);
+
+
   const handleLogout = async () => {
     try {
       let res = await axios.post(logoutApi, {}, config);
@@ -76,7 +103,6 @@ const AppProvider = ({ children }) => {
     }
   }
 
-
   useEffect(() => {
     getUser();
   }, []);
@@ -85,7 +111,9 @@ const AppProvider = ({ children }) => {
     <AppContext.Provider value={{
       config,
       user,
-      t, lang, setLanguage, handleLogout
+      t, lang, setLanguage, handleLogout,
+      isPlayerReady, setIsPlayerReady,
+      podcast, setPodcast,
     }}>
       {children}
     </AppContext.Provider>

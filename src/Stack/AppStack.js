@@ -18,6 +18,8 @@ import PrivacyAndPolicyScreen from "../Screen/Profile/Setting/PrivacyAndPolicySc
 import TermAndConditionScreen from "../Screen/Profile/Setting/TermAndConditionScreen";
 import ContactUsScreen from "../Screen/Profile/Setting/ContactUsScreen";
 import RecommendedCourseScreen from "../Screen/Course/RecommendedCourseScreen";
+import PodcastDetailScreen from "../Screen/Podcast/PodcastDetailScreen";
+import AudioPlayingScreen from "../Screen/Audio/AudioPlayingScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -31,7 +33,10 @@ function AppStack() {
         <Stack.Screen name='CourseWatchingScreen' component={CourseWatchingScreen} />
         <Stack.Screen name='SavedCourseScreen' component={SavedCourseScreen} />
         <Stack.Screen name='SearchScreen' component={SearchScreen} />
+
         <Stack.Screen name='PodcastFilterByCategoryScreen' component={PodcastFilterByCategoryScreen} />
+        <Stack.Screen name='PodcastDetailScreen' component={PodcastDetailScreen} />
+
         <Stack.Screen name='CourseFilterByCategoryScreen' component={CourseFilterByCategoryScreen} />
         <Stack.Screen name='FullCategoryScreen' component={FullCategoryScreen} />
         <Stack.Screen name='DownloadScreen' component={DownloadScreen} />
@@ -42,6 +47,7 @@ function AppStack() {
         <Stack.Screen name='TermAndConditionScreen' component={TermAndConditionScreen} />
         <Stack.Screen name='ContactUsScreen' component={ContactUsScreen} />
         <Stack.Screen name='RecommendedCourseScreen' component={RecommendedCourseScreen} />
+        <Stack.Screen name='AudioPlayingScreen' component={AudioPlayingScreen} />
       </Stack.Navigator>
     </AppProvider>
   );

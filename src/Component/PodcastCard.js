@@ -1,13 +1,19 @@
 import React from 'react'
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { COLORS, FONTS, SIZES } from "../Theme/Theme";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNavigation } from "@react-navigation/native";
 
 
 const PodcastCard = ({ item }) => {
+
+  const navigation = useNavigation();
+
+
+
   return (
-    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+    <Pressable onPress={() => navigation.navigate('PodcastDetailScreen', { id: item.id })} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
       <View style={{ flexDirection: 'row', gap: 10 }}>
         <Image style={{ width: 80, height: 80, borderRadius: SIZES.radius }} source={{
           uri: item.image
@@ -30,10 +36,7 @@ const PodcastCard = ({ item }) => {
           </View>
         </View>
       </View>
-      <TouchableOpacity style={styles.detailButton}>
-        <Text style={styles.detailText}>See Details</Text>
-      </TouchableOpacity>
-    </View>
+    </Pressable>
   )
 }
 
@@ -43,8 +46,8 @@ const styles = StyleSheet.create({
     color: COLORS.black
   },
   smallProfile: {
-    width: 30,
-    height: 30,
+    width: 25,
+    height: 25,
     borderRadius: SIZES.roundRadius
   },
   detailButton: {
