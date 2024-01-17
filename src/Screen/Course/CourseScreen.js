@@ -76,7 +76,7 @@ const CourseScreen = props => {
           <View style={{ backgroundColor: COLORS.white, flex: 1 }}>
             <ScreenHeaderBarComponent headerText={'Course'} />
             <View style={{ paddingHorizontal: SIZES.padding2, paddingBottom: SIZES.padding }}>
-              <SearchBarComponent />
+              <SearchBarComponent text={'Search Course'} />
             </View>
             <View style={{ ...globalStyles.subContainer, paddingBottom: SIZES.padding * 4 }}>
               <View>

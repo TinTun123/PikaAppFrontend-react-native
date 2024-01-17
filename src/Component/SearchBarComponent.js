@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
 import { COLORS, FONTS, SIZES } from "../Theme/Theme";
 import Feather from "react-native-vector-icons/Feather";
 import { useNavigation } from "@react-navigation/native";
+import { AppContext } from "../Provider/AppProvider";
 
 const SearchBarComponent = props => {
   const navigation = useNavigation();
-  return(
-    <TouchableOpacity onPress={()=>navigation.navigate("SearchScreen")} style={styles.searchBar}>
-      <Text style={{ ...FONTS.body4, color: COLORS.darkgray }}>Search PodCast</Text>
+  const { t } = useContext(AppContext);
+
+  return (
+    <TouchableOpacity onPress={() => navigation.navigate("SearchScreen")} style={styles.searchBar}>
+      <Text style={{ ...FONTS.body4, color: COLORS.darkgray }}>{t(props.text)}</Text>
       <Feather name="search" size={20} color={COLORS.darkgray} />
     </TouchableOpacity>
   )

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../Screen/HomeScreen";
 import { Text, View } from "react-native";
@@ -10,9 +10,12 @@ import ProfileScreen from "./Profile/ProfileScreen";
 import PodcastScreen from "./PodcastScreen";
 import CourseScreen from "./Course/CourseScreen";
 import CategoryScreen from "./Category/CategoryScreen";
+import { AppContext } from "../Provider/AppProvider";
 
 const Stack = createBottomTabNavigator();
 const Icon = ({ name, focused, text }) => {
+
+  const { t } = useContext(AppContext);
 
   const Dynamic = () => {
     if (name === 'podcast') {
@@ -27,10 +30,14 @@ const Icon = ({ name, focused, text }) => {
   return (
     <View style={{ justifyContent: "center", alignItems: "center" }}>
       {Dynamic()}
-      <Text style={{ color: focused ? COLORS.primary : COLORS.darkgray, ...FONTS.body6 }}>{text}</Text>
+      <Text style={{ color: focused ? COLORS.primary : COLORS.darkgray, ...FONTS.body6 }}>{t(text)}</Text>
     </View>
   );
 };
+
+
+
+
 function BottomTabScreen() {
   return (
     <Stack.Navigator screenOptions={{

@@ -60,7 +60,7 @@ const SavedCourseScreen = (props) => {
     <View style={globalStyles.container}>
       <ScreenHeaderBarComponent headerText={'Saved Course'} />
       {
-        isFetching ?
+        isFetching && !refreshing ?
           <FullScreenShadowLoading />
           :
           <View style={{ ...globalStyles.subContainer, paddingBottom: 100 }}>
