@@ -78,8 +78,8 @@ const CourseDetailScreen = () => {
                   </View>
                   :
                   <View style={[styles.enrollBtnContainer, { justifyContent: "space-between", flexDirection: "row", paddingHorizontal: SIZES.padding2 }]}>
-                    <Text style={{ ...FONTS.body3, color: COLORS.dodgerBlue }}>{(+data?.data?.course?.price)?.toLocaleString("en-US")} MMK</Text>
-                    <TouchableOpacity onPress={() => navigation.navigate("CourseWatchingScreen", id)} style={{
+                    <Text style={{ ...FONTS.body3, color: COLORS.dodgerBlue }}>{(+data?.data?.course?.fee)?.toLocaleString("en-US")} MMK</Text>
+                    <TouchableOpacity onPress={buyCourse} style={{
                       width: '30%',
                       height: 45,
                       backgroundColor: COLORS.primary,

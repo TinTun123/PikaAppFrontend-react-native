@@ -24,11 +24,11 @@ const CourseCard = ({ item }) => {
         <View style={{ justifyContent: "space-between", width: "100%" }}>
           <Text style={{ ...FONTS.body4, color: COLORS.black }}>{item.title}</Text>
           <View style={{ flexDirection: "row", gap: 5, alignItems: "center" }}>
-            <Text style={styles.module}>Modules : {item.modules_count} Lessons : {item.videos_count}</Text>
+            <Text style={styles.module}>Modules : {item.modules_count} Lessons : {item.lessons_count}</Text>
           </View>
           <View style={{ flexDirection: "row", gap: 5, alignItems: "center" }}>
             <View style={{ flexDirection: "row", gap: 5, alignItems: "center" }}>
-              <Text style={styles.tagStyle}>{(+item.price).toLocaleString("en-US")} mmk</Text>
+              <Text style={styles.tagStyle}>{(+item.fee).toLocaleString("en-US")} mmk</Text>
             </View>
           </View>
         </View>

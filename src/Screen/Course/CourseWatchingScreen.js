@@ -50,7 +50,7 @@ const CourseWatchingScreen = () => {
 
   useEffect(() => {
     if (!courseLoading) {
-      setCurrentLessonId(courseData?.data?.course?.modules?.[0]?.videos?.[0]?.id);
+      setCurrentLessonId(courseData?.data?.course?.modules?.[0]?.lessons?.[0]?.id);
     }
   }, [courseLoading]);
 
@@ -118,7 +118,7 @@ const CourseWatchingScreen = () => {
                 <View style={{ height: width / 1.75 }}>
                   <Vimeo
                     style={{ flex: 1 }}
-                    videoId={currentLesson?.video}
+                    videoId={currentLesson?.file}
                     params={"api=1&autoplay=0"}
                   />
                 </View>
@@ -132,31 +132,30 @@ const CourseWatchingScreen = () => {
                 color: COLORS.black,
                 marginBottom: SIZES.padding - 5,
               }}>{currentLesson?.title}</Text>
-              <Text style={{ ...FONTS.body4, color: COLORS.gray,marginBottom:SIZES.padding2 }}>
+              <Text style={{ ...FONTS.body4, color: COLORS.gray, marginBottom: SIZES.padding2 }}>
                 {currentLesson?.description}
               </Text>
               {
                 courseData?.data?.course?.modules.map(item => (
 
-                  <View style={{borderWidth:1.4,borderColor:COLORS.lightGray4,borderRadius:SIZES.radius * 3,marginBottom:SIZES.padding2,paddingHorizontal:SIZES.padding2 * 1.3}}>
+                  <View style={{ borderWidth: 1.4, borderColor: COLORS.lightGray4, borderRadius: SIZES.radius * 3, marginBottom: SIZES.padding2, paddingHorizontal: SIZES.padding2 * 1.3 }}>
                     <CollapsibleView key={item.id} trigger={
-                      <View style={{ paddingVertical: SIZES.padding}}>
-                        <View style={{flexDirection:"row"}}>
+                      <View style={{ paddingVertical: SIZES.padding }}>
+                        <View style={{ flexDirection: "row" }}>
                           <Text style={{ ...FONTS.body4, color: COLORS.black }}>Module {item.id} | </Text>
                           <Text style={{ ...FONTS.body3, color: COLORS.black }}>
                             {item.title}
                           </Text>
                         </View>
-
-                        <View style={{flexDirection:"row",}}>
-                          <Text style={{color:COLORS.darkgray,...FONTS.body4}}>{item?.videos?.length} Videos</Text>
-                          <Text style={{color:COLORS.darkgray,...FONTS.body4}}> {totalDuration}</Text>
+                        <View style={{ flexDirection: "row", }}>
+                          <Text style={{ color: COLORS.darkgray, ...FONTS.body4 }}>{item?.lessons?.length} Videos</Text>
+                          <Text style={{ color: COLORS.darkgray, ...FONTS.body4 }}> {totalDuration}</Text>
 
                         </View>
                       </View>
                     }>
                       {
-                        item?.videos?.map(video => (
+                        item?.lessons?.map(video => (
                           <TouchableOpacity
                             key={video.id}
                             onPress={() => setCurrentLessonId(video.id)}
@@ -168,7 +167,7 @@ const CourseWatchingScreen = () => {
                                     <AntDesign name="checkcircle" size={27} color={COLORS.primary} />
                                     :
                                     <AntDesign name="checkcircleo" size={27}
-                                               color={currentLesson?.id === video.id ? COLORS.primary : COLORS.black} />
+                                      color={currentLesson?.id === video.id ? COLORS.primary : COLORS.black} />
 
                                 }
                               </TouchableOpacity>
